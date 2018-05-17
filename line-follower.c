@@ -19,6 +19,8 @@ bool isBlack(int val) {
 
 task main()
 {
+	// setMotorBrakeMode(LeftMotor, motorBrake);
+
 	setMotorSpeed(LeftMotor, speed);
 	setMotorSpeed(RightMotor, speed);
 	while(isWhite(getColorReflected(ColorSensor)) {}
