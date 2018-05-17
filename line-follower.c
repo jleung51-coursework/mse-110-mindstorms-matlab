@@ -9,7 +9,7 @@
 */
 
 // Max speed is 100 or -100
-const int speed = 15;
+const int speed = 25;
 // Black if less than threshold; white if greater than threshold
 const int reflectionThreshold = 35;
 
@@ -29,13 +29,17 @@ task main()
 	
 	
 	while (true) {
-		displayCenteredTextLine(2, "Version 2.2");
+		displayCenteredTextLine(2, "Version 2.4");
 		int colorReflected = getColorReflected(ColorSensor);
 		displayCenteredTextLine(5, "%d", colorReflected);
 
-		if(colorReflected < 5) {
-			setMotorSpeed(LeftMotor, speed);
-			setMotorSpeed(RightMotor, 0);
+		if(colorReflected < 10) {
+			setMotorSpeed(LeftMotor, speed*0.5);
+			setMotorSpeed(RightMotor, speed*-0.5);
+		}
+		else if(colorReflected > 40) {
+			setMotorSpeed(LeftMotor, speed*-0.5);
+			setMotorSpeed(RightMotor, speed*0.5);
 		}
 		else if(isBlack(colorReflected)) {
 			float difference = reflectionThreshold - colorReflected;
