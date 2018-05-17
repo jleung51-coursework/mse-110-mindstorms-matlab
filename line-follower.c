@@ -9,7 +9,7 @@
 */
 
 // Max speed is 100 or -100
-const int speed = 40;
+const int speed = 25;
 // Black if less than threshold; white if greater than threshold
 const int reflectionThreshold = 35;
 
@@ -35,30 +35,35 @@ task main()
 		displayCenteredTextLine(5, "%d", colorReflected);
 
 		if(colorReflected < 10) {
-			int newLeftSpeed = speed*0.5;
-			int newRightSpeed = speed*-0.5;
-		
-			setMotorSpeed(LeftMotor, speed*0.5);
-			setMotorSpeed(RightMotor, speed*-0.5);
+			setMotorSpeed(LeftMotor, speed*(0.5));
+			setMotorSpeed(RightMotor, -speed *(0.5));
+			displayCenteredTextLine(7, "Corner");
 		}
-		else if(colorReflected > 42) {
-			setMotorSpeed(LeftMotor, speed*-0.5);
-			setMotorSpeed(RightMotor, speed*0.5);
+		else if(colorReflected > 40) {
+			setMotorSpeed(LeftMotor, -speed*(0.5));
+			setMotorSpeed(RightMotor, speed*(0.5));
+			displayCenteredTextLine(7, "Corner");
 		}
-
+		if (colorReflected < 35 && colorReflected > 15){
+			setMotorSpeed(LeftMotor, speed);
+			setMotorSpeed(RightMotor, speed);
+			displayCenteredTextLine(7, "Centered");
+		}
 		else if(isBlack(colorReflected)) {
 			float difference = reflectionThreshold - colorReflected;
 			float ratio = 0.5;
 
-			setMotorSpeed(LeftMotor, (1/2)*speed);
-			setMotorSpeed(RightMotor, (1/4)*speed);
+			setMotorSpeed(LeftMotor, speed * ratio);
+			setMotorSpeed(RightMotor, speed * ratio * ratio);
+			displayCenteredTextLine(7, "Slight Right");
 		}
 		else {
 			float difference = colorReflected - reflectionThreshold;
 			float ratio = 0.5;
 
-			setMotorSpeed(LeftMotor, (1/4)*speed);
-			setMotorSpeed(RightMotor, (1/2)*speed);
+			setMotorSpeed(LeftMotor, speed * ratio * ratio);
+			setMotorSpeed(RightMotor, speed * ratio);
+			displayCenteredTextLine(7, "Slight Left");
 		}
 	}
 }
