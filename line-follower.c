@@ -14,7 +14,7 @@ const int speed = 25;
 // Black if less than threshold; white if greater than threshold
 const int reflectionThreshold = 35;
 
-const int turn_threshold = 100;  // Counts of pure white or pure black before turning sharply to find line again
+const int turn_threshold = 30;  // Counts of pure white or pure black before turning sharply to find line again
 int persistent_black = 0;
 int persistent_white = 0;
 
@@ -32,7 +32,6 @@ task main()
 
 	while (true) {
 
-		displayCenteredTextLine(2, "Version 2.4");
 		int colorReflected = getColorReflected(ColorSensor);
 		displayCenteredTextLine(5, "%d", colorReflected);
 
@@ -48,7 +47,9 @@ task main()
 		*/
 		
 		
-		if (getUSDistance(UltrasonicSensor) <= 10){
+		if (getUSDistance(UltrasonicSensor) <= 15){
+		
+		
 		
 			setMotorSpeed(LeftMotor, 0);
 			setMotorSpeed(RightMotor, 0);
@@ -56,6 +57,14 @@ task main()
 			sleep(2000);
 			playTone(500, 5);
 	
+			resetMotorEncoder(LeftMotor);
+      resetMotorEncoder(RightMotor);
+			setMotorTarget(LeftMotor, 120, 30);
+      setMotorTarget(RightMotor, 120, 30);	
+			waitUntilMotorStop(LeftMotor);
+			waitUntilMotorStop(RightMotor);
+			sleep(500);
+			
 			resetMotorEncoder(LeftMotor);
       resetMotorEncoder(RightMotor);
 			
@@ -74,6 +83,15 @@ task main()
 			waitUntilMotorStop(RightMotor);
 			
 			sleep(500);
+			
+			resetMotorEncoder(LeftMotor);
+      resetMotorEncoder(RightMotor);
+			setMotorTarget(LeftMotor, -120, 30);
+      setMotorTarget(RightMotor, -120, 30);	
+			waitUntilMotorStop(LeftMotor);
+			waitUntilMotorStop(RightMotor);
+			sleep(500);
+			
 		}
 
 		bool path_chosen = false;
@@ -82,7 +100,7 @@ task main()
 		if(colorReflected <= 10) {
 			++persistent_black;
 			if(persistent_black > turn_threshold) {
-				setMotorSpeed(LeftMotor, speed*0.6);
+				setMotorSpeed(LeftMotor, speed*0.5);
 				setMotorSpeed(RightMotor, speed*-0.6);
 			}
 			path_chosen = true;
@@ -95,7 +113,7 @@ task main()
 			++persistent_white;
 			if(persistent_white > turn_threshold) {
 				setMotorSpeed(LeftMotor, speed*-0.6);
-				setMotorSpeed(RightMotor, speed*0.6);
+				setMotorSpeed(RightMotor, speed*0.5);
 			}
 			path_chosen = true;
 		}
@@ -110,12 +128,18 @@ task main()
 			}
 			else if(isBlack(colorReflected)) {
 				setMotorSpeed(LeftMotor, speed*0.50);
-				setMotorSpeed(RightMotor, speed*0.25);
+				setMotorSpeed(RightMotor, speed*0.30);
 			}
 			else {
-				setMotorSpeed(LeftMotor, speed*0.25);
+				setMotorSpeed(LeftMotor, speed*0.30);
 				setMotorSpeed(RightMotor, speed*0.50);
 			}
 		}
+
+		displayCenteredTextLine(2, "Version 3.6");
+		displayCenteredTextLine(4, "Color reflected: %d", colorReflected);
+		displayCenteredTextLine(5, "Left speed: %d", getMotorSpeed(LeftMotor));
+		displayCenteredTextLine(6, "Right speed: %d", getMotorSpeed(RightMotor));
+		
 	}
 }
