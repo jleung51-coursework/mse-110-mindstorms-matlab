@@ -34,8 +34,8 @@ end
 barcode_keys = save_barcodes(barcode_filenames)
 %}
 
-%code = read_barcode('input.csv');  % TODO: Implement CSV functionality
-code = 311111133;
+%code = read_barcode('sample-barcodes/letter_D_noisy.jpg');
+code = read_barcode('input.csv');
 
 index = find(barcode_keys == code);
 if index == -1
