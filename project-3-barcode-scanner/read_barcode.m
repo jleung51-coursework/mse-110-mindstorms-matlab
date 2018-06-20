@@ -14,7 +14,7 @@ elseif extension == 'jpg' || extension == 'jpeg' || extension == 'png'
   img = double(imread(filename));
   data = img(850, :);
   % Uncomment the line below to save the data to a CSV file
-  dlmwrite('input.csv', data, '-append');
+  % dlmwrite('input.csv', data);
 else
   fprintf('The file extension to be read (%s) was invalid.\n', extension);
   exit(1);
