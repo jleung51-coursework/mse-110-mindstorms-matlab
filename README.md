@@ -1,29 +1,24 @@
-# README #
+# MSE 110: Projects
 
-This README would normally document whatever steps are necessary to get your application up and running.
+This repository contains the projects for _MSE 110: Mechatronics Design I_ at Simon Fraser University for the Summer 2018 semester.
 
-### What is this repository for? ###
+The projects coded in **Lego Mindstorms EV3 ROBOTC** and **MATLAB**.
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+## Setup
 
-### How do I get set up? ###
+### MATLAB
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+Project 3 requires [MATLAB](https://www.mathworks.com/products/matlab.html).
 
-### Contribution guidelines ###
+If you do not have a MATLAB licence, [GNU Octave](https://www.gnu.org/software/octave/) is a free, open-source alternative. The project files are fully compatible with GNU Octave.
 
-* Writing tests
-* Code review
-* Other guidelines
+Install GNU Octave, then install the development packages:
+```
+sudo apt install liboctave-dev
+```
 
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+From the console in Octave, install the required packages for finding the data peaks in `read_barcode`:
+```
+pkg install -forge control
+pkg install -forge signal
+```
