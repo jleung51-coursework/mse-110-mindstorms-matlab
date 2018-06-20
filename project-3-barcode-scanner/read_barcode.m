@@ -39,8 +39,11 @@ distances = locations(1:numel(locations)-1);
 for i = 1:numel(distances)
   distances(i) = locations(i+1) - locations(i);
 end
+
+% Reduce the values to multiples of their smallest bar length
 distances_normalized = round(distances/min(distances));
 
+% Concatenate all numbers in the array into a single string without whitespace
 barcode = str2num(strrep(num2str(distances_normalized), ' ', ''));
-retval = barcode
+retval = barcode;
 return

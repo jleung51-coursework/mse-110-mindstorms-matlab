@@ -24,16 +24,18 @@ barcode_keys = [ ...
 
 % Uncomment the following lines to decode and print out the barcode keys of
 % the files in this directory
-%
-%barcode_filenames = cell(numel(barcode_values), 1);
-%for i = 1:numel(barcode_filenames)
-%  barcode_filenames{i} = [ ...
-%      strcat('sample-barcodes/letter_', num2str(barcode_values(i)), '_noisy.jpg') ...
-%  ];
-%end
-%barcode_keys = save_barcodes(barcode_filenames)
+%{
+barcode_filenames = cell(numel(barcode_values), 1);
+for i = 1:numel(barcode_filenames)
+  barcode_filenames{i} = [ ...
+      strcat('sample-barcodes/letter_', num2str(barcode_values(i)), '_noisy.jpg') ...
+  ];
+end
+barcode_keys = save_barcodes(barcode_filenames)
+%}
 
 %code = read_barcode('input.csv');  % TODO: Implement CSV functionality
+code = 311111133;
 
 index = find(barcode_keys == code);
 if index == -1
