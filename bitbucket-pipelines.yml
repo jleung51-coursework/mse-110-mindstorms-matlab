@@ -13,8 +13,7 @@ pipelines:
           - sudo add-apt-repository ppa:octave/stable
           - sudo apt-get update
           - sudo apt-get install -y octave liboctave-dev
-          - octave --no-gui pkg install -forge control
-          - octave --no-gui pkg install -forge signal
           - cd project-3-barcode-scanner/
+          - octave --no-gui setup.m
           - octave --no-gui test_read_barcode.m
           - cd ../
