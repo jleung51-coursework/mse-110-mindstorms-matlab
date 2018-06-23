@@ -1,6 +1,6 @@
 # Bitbucket Pipelines configuration file
 
-image: alpine/latest
+image: atlassian/default-image:1
 
 pipelines:
   default:
