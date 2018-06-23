@@ -129,3 +129,7 @@ else
 end
 fprintf('[INFO   ] --------------------------------------------------------\n');
 fprintf('\n');
+
+if failures != 0
+  exit(1);
+end
