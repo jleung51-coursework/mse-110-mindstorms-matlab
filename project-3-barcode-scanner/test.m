@@ -45,7 +45,8 @@ barcodes = {
     'sample-barcode-scans/input_letter_A_medium_backwards.csv' ...
     'sample-barcode-scans/input_letter_A_medium_forwards.csv' ...
     'sample-barcode-scans/input_letter_K_medium_backwards.csv' ...
-    'sample-barcode-scans/input_letter_K_medium_forwards.csv' };
+    'sample-barcode-scans/input_letter_K_medium_forwards.csv' ...
+    };
 
 tests = 0;
 failures = 0;
@@ -68,8 +69,15 @@ for i = 1:numel(barcodes)
     end
 end
 
-fprintf('');
-fprintf( ...
-    '\nTest suite complete. %d tests run, %d tests failed.\n\n', ...
-    tests, failures ...
-);
+fprintf('\n');
+fprintf('[INFO   ] --------------------------------------------------------\n');
+if failures == 0
+  fprintf('[INFO   ] TEST SUITE PASSED\n');
+else
+  fprintf('[INFO   ] TEST SUITE FAILED\n');
+end
+fprintf('[INFO   ] --------------------------------------------------------\n');
+fprintf('[INFO   ] %d tests run.\n', tests);
+fprintf('[INFO   ] %d tests failed.\n', failures);
+fprintf('[INFO   ] --------------------------------------------------------\n');
+fprintf('\n');
