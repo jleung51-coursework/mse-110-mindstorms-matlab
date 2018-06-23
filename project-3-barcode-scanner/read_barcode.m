@@ -92,6 +92,15 @@ distance_unit = round(distance_unit);
 % Reduce the values to multiples of the bar length
 distances_normalized = round(distances/distance_unit);
 
+% All bar lengths are either 1 or 3
+for i = 1:numel(distances_normalized)
+  if distances_normalized(i) < 1
+    distances_normalized(i) = 1;
+  elseif distances_normalized(i) > 3
+    distances_normalized(i) = 3;
+  end
+end
+
 fprintf( ...
     '[DEBUG  ] Normalized distances between each peak: %s\n', ...
     num2str(distances_normalized) ...
