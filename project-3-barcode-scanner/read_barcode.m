@@ -11,18 +11,29 @@ extension = filename([end-2:end]);
 if extension == 'csv'
   data = csvread(filename);
   data = data';
+
+  % Set variables calibrated for ROBOTC scanning
+  average_length = 30;
+  min_peak_height = 0.6;
+  min_peak_distance = 28;
+
 elseif extension == 'jpg' || extension == 'jpeg' || extension == 'png'
   img = double(imread(filename));
   data = img(850, :);
   % Uncomment the line below to save the data to a CSV file
   % dlmwrite('input.csv', data);
+
+  % Set variables calibrated for image scanning
+  average_length = 3;
+  min_peak_height = 40;
+  min_peak_distance = 7;
+
 else
   fprintf('The file extension to be read (%s) was invalid.\n', extension);
   exit(1);
 end
 
 % Calculate moving average
-average_length = 30;
 data_averaged = data(1:numel(data)-(average_length-1));
 for i = 1:numel(data_averaged) - average_length
   data_averaged(i) = sum(data(i:i+average_length-1))/average_length;
@@ -44,16 +55,8 @@ data_derivative( ...
 % Locate peaks
 [peaks, locations] = findpeaks( ...
     data_derivative, ...
-    'MinPeakHeight', 0.6, ...
-    'MinPeakDistance', 28 );
-
-% Calibrated for sample photos
-%{
-[peaks, locations] = findpeaks( ...
-    data_derivative, ...
-    'MinPeakHeight', 40, ...
-    'MinPeakDistance', 7);
-%}
+    'MinPeakHeight', min_peak_height, ...
+    'MinPeakDistance', min_peak_distance);
 
 %plot(data); hold on;
 %plot(data_averaged); hold on;
