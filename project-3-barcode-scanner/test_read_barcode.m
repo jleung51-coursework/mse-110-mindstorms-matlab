@@ -1,5 +1,4 @@
-% This MATLAB program reads a CSV file representing image values from reading
-% a barcode, and decodes it into one of several preset values.
+% This MATLAB program tests the function read_barcode.
 
 % Octave-specific commands
 is_octave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
