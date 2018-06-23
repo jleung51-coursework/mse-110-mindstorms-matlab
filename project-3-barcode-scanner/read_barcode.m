@@ -10,6 +10,7 @@ function retval = read_barcode(filename);
 extension = filename([end-2:end]);
 if extension == 'csv'
   data = csvread(filename);
+  data = data';
 elseif extension == 'jpg' || extension == 'jpeg' || extension == 'png'
   img = double(imread(filename));
   data = img(850, :);
