@@ -22,7 +22,7 @@ else
 end
 
 % Calculate moving average
-average_length = 3;
+average_length = 30;
 data_averaged = data(1:numel(data)-(average_length-1));
 for i = 1:numel(data_averaged) - average_length
   data_averaged(i) = sum(data(i:i+average_length-1))/average_length;
@@ -44,8 +44,16 @@ data_derivative( ...
 % Locate peaks
 [peaks, locations] = findpeaks( ...
     data_derivative, ...
+    'MinPeakHeight', 0.6, ...
+    'MinPeakDistance', 28 );
+
+% Calibrated for sample photos
+%{
+[peaks, locations] = findpeaks( ...
+    data_derivative, ...
     'MinPeakHeight', 40, ...
     'MinPeakDistance', 7);
+%}
 
 %plot(data); hold on;
 %plot(data_averaged); hold on;
