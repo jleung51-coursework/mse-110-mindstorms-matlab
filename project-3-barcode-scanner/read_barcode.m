@@ -50,10 +50,28 @@ for i = 1:numel(distances)
   distances(i) = locations(i+1) - locations(i);
 end
 
-% Reduce the values to multiples of their smallest bar length
-distances_normalized = round(distances/min(distances));
+% Calculate the average of the smallest units
+% Prevents the case where a slightly smaller minimum value makes
+% a large value round up by mistake
+min_distance = min(distances);
+distance_unit_average = 0;
+distance_unit_average_count = 0;
 
-% Concatenate all numbers in the array into a single string without whitespace
+for i = 1:numel(distances)
+  if min_distance*.5 <= distances(i) && distances(i) <= min_distance*1.5
+  %if round(distances(i)/min_distance) == 1
+    distance_unit_average = distance_unit_average + distances(i);
+    distance_unit_average_count = distance_unit_average_count + 1;
+  end
+end
+distance_unit = distance_unit_average / distance_unit_average_count;
+distance_unit = round(distance_unit);
+
+% Reduce the values to multiples of the bar length
+distances_normalized = round(distances/distance_unit);
+
+% Concatenate all numbers in the array into a single string
+% without whitespace
 barcode = str2num(strrep(num2str(distances_normalized), ' ', ''));
 retval = barcode;
 return
