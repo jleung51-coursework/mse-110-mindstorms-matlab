@@ -45,7 +45,7 @@ if isempty(index)
 end
 
 if isempty(index)
-  fprintf('Barcode not found.\n');
+  fprintf('[INFO   ] Barcode not found.\n');
 else
-  fprintf('Barcode: %s\n', barcode_values(index));
+  fprintf('[INFO   ] Barcode: %s\n', barcode_values(index));
 end
