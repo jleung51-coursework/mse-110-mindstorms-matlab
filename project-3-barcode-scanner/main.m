@@ -38,7 +38,12 @@ barcode_keys = save_barcodes(barcode_filenames)
 code = read_barcode('input.csv');
 
 index = find(barcode_keys == code);
-if index == -1
+
+if isempty(index)
+    index = find(barcode_keys == str2num(fliplr(num2str(code))));
+end
+
+if isempty(index)
   fprintf('Barcode not found.\n');
 else
   fprintf('Barcode: %s\n', barcode_values(index));
