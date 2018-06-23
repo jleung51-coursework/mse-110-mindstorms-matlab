@@ -47,15 +47,29 @@ barcodes = {
     'sample-barcode-scans/input_letter_K_medium_backwards.csv' ...
     'sample-barcode-scans/input_letter_K_medium_forwards.csv' };
 
+tests = 0;
+failures = 0;
+
 for i = 1:numel(barcodes)
+    tests = tests + 1;
     code = read_barcode(barcodes{i});
     index = find(barcode_keys == code);
     if isempty(index)
         index = find(barcode_keys == str2num(fliplr(num2str(code))));
     end
     if isempty(index)
-      fprintf('[FAILURE] File: %s | Barcode not found.\n', barcodes{i});
+      failures = failures + 1;
+      fprintf('[FAILURE] Testing file: %s | Barcode not found.\n', barcodes{i});
     else
-      fprintf('[SUCCESS] File: %s | Barcode: %s\n', barcodes{i}, barcode_values(index));
+      fprintf( ...
+          '[SUCCESS] Testing file: %s | Barcode: %s\n', ...
+          barcodes{i}, barcode_values(index) ...
+      );
     end
 end
+
+fprintf('');
+fprintf( ...
+    '\nTest suite complete. %d tests run, %d tests failed.\n\n', ...
+    tests, failures ...
+);
