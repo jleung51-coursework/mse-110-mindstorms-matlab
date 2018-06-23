@@ -8,7 +8,7 @@ options:
 pipelines:
   default:
     - step:
-        name: Project 3: Barcode Scanner - Tests
+        name: Project 3 Barcode Scanner - Tests
         script:
           - sudo add-apt-repository ppa:octave/stable
           - sudo apt-get update
