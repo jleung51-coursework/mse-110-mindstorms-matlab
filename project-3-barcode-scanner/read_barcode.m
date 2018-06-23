@@ -1,6 +1,10 @@
 % This function analyses an image or CSV of a barcode, detects the individual
 % bars, and returns a number representing the barcode value.
 %
+% Octave-specific dependencies:
+%   signal: Required to find the changes in color.
+%     The command `pkg load signal` must be executed beforehand.
+%
 % Parameters:
 %   filename: File in the current directory with the barcode to be read
 % Returns a number: Barcode value of the file given (e.g. 113133111).
