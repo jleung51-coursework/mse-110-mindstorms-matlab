@@ -1,0 +1,17 @@
+# Bitbucket Pipelines configuration file
+
+image: alpine/latest
+
+pipelines:
+  default:
+    - step:
+        name: Install GNU Octave
+        script:
+          - sudo add-apt-repository ppa:octave/stable
+          - sudo apt install octve
+    - step:
+         name: Project 3 Barcode Scanner Run tests
+         script:
+           - cd project-3-barcode-scanner/
+           - octave test_read_barcode.m
+           - cd ../
