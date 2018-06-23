@@ -8,6 +8,7 @@ pipelines:
         name: Install GNU Octave
         script:
           - sudo add-apt-repository ppa:octave/stable
+          - sudo apt-get update
           - sudo apt-get install -y octave
     - step:
          name: Project 3 Barcode Scanner Run tests
