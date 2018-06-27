@@ -106,6 +106,11 @@ for i = 1:numel(distances_normalized)
     distances_normalized(i) = 1;
   elseif distances_normalized(i) > 3
     distances_normalized(i) = 3;
+  elseif distances_normalized(i) == 2
+    distances_normalized(i) = 3;
+    if(distances(i) < 2*min(distances))
+      distances_normalized(i) = 1;
+    end
   end
 end
 
@@ -117,6 +122,6 @@ fprintf( ...
 % Concatenate all numbers in the array into a single string
 % without whitespace
 barcode = str2num(strrep(num2str(distances_normalized), ' ', ''));
-fprintf('[DEBUG  ] Barcode value read: %d\n', barcode);
+fprintf('[INFO   ] Barcode value read: %d\n', barcode);
 retval = barcode;
 return
