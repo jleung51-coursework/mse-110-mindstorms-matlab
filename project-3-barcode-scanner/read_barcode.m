@@ -20,8 +20,8 @@ if extension == 'csv'
 
   % Set variables calibrated for ROBOTC scanning
   average_length = 30;
-  min_peak_height = 0.6;
-  min_peak_distance = 28;
+  min_peak_height = 0.4;
+  min_peak_distance_base = 25;
 
 elseif extension == 'jpg' || extension == 'jpeg' || extension == 'png'
   img = double(imread(filename));
@@ -32,7 +32,7 @@ elseif extension == 'jpg' || extension == 'jpeg' || extension == 'png'
   % Set variables calibrated for image scanning
   average_length = 3;
   min_peak_height = 40;
-  min_peak_distance = 7;
+  min_peak_distance_base = 7;
 
 else
   fprintf('The file extension to be read (%s) was invalid.\n', extension);
@@ -58,13 +58,33 @@ data_derivative( ...
     numel(data_derivative) ...
 ) = [];
 
-% Locate peaks
+% Locate first and last peaks
+[peaks, locations] = findpeaks( ...
+    data_derivative, ...
+    'MinPeakHeight', min_peak_height, ...
+    'MinPeakDistance', min_peak_distance_base);
+fprintf('[DEBUG  ] Number of peaks found in first search: %d\n', numel(peaks));
+
+% Calculate the optimal peak distance (varies based on size of barcode)
+total_units = 15;
+range = locations(numel(locations)) - locations(1);
+min_peak_distance = (range/total_units) * 0.85;
+fprintf('[DEBUG  ] Optimal peak distance: %d\n', min_peak_distance);
+
+% Locate actual peaks
 [peaks, locations] = findpeaks( ...
     data_derivative, ...
     'MinPeakHeight', min_peak_height, ...
     'MinPeakDistance', min_peak_distance);
+fprintf('[DEBUG  ] Number of peaks found in optimal search: %d\n', numel(peaks));
 
-fprintf('[DEBUG  ] Number of peaks found: %d\n', numel(peaks));
+while numel(peaks) > 10
+  index = find(peaks == min(peaks));
+  index = index(1);
+  fprintf('[DEBUG  ] Too many peaks, removing %d at index %d\n', min(peaks), index);
+  peaks(index) = [];
+  locations(index) = [];
+end;
 
 %plot(data); hold on;
 %plot(data_averaged); hold on;
