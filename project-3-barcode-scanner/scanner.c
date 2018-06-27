@@ -9,7 +9,7 @@
  */
 
 const unsigned int samplingDelay = 4;
-const int speed = 12;
+const int speed = 25;
 
 task main()
 {
