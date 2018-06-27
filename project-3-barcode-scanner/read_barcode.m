@@ -14,7 +14,7 @@ fprintf('[DEBUG  ] Reading barcode from file: %s\n', filename);
 
 extension = filename([end-2:end]);
 fprintf('[DEBUG  ] File extension detected: %s\n', extension);
-if extension == 'csv'
+if strcmp('csv', extension)
   data = csvread(filename);
   data = data';
 
@@ -23,7 +23,10 @@ if extension == 'csv'
   min_peak_height = 0.4;
   min_peak_distance_base = 25;
 
-elseif extension == 'jpg' || extension == 'jpeg' || extension == 'png'
+elseif strcmp('jpg', extension) || ...
+    strcmp('jpeg', extension) || ...
+    strcmp('png', extension)
+
   img = double(imread(filename));
   data = img(850, :);
   % Uncomment the line below to save the data to a CSV file
