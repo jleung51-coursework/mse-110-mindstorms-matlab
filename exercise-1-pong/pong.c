@@ -1,6 +1,9 @@
-#pragma config(Sensor, S1,     TouchSensor1,   sensorEV3_Touch)
-#pragma config(Sensor, S2,     TouchSensor2,   sensorEV3_Touch)
+/*
+* This Lego Mindstorms EV3 ROBOTC program follows a black line.
+*
+*/
 
+// Returns whether or not the ball is in contact with the paddle by x-position
 bool paddleBounce(int ballXPos, int paddleLeft, int paddleRight) {
 	return paddleLeft <= ballXPos && ballXPos <= paddleRight;
 }
@@ -9,7 +12,9 @@ void menuScreen() {
 	eraseDisplay();
 	displayCenteredBigTextLine(5, "PONG");
 	displayCenteredTextLine(9, "Press any button to begin");
-	while(!getButtonPress(buttonAny)) {sleep(50);}
+	while(!getButtonPress(buttonAny)) {
+		sleep(50);
+	}
 }
 
 task main()
@@ -58,6 +63,7 @@ task main()
 		drawCircle(ballXPos, ballYPos, ballDiameter);
 		drawRect(paddleLeft, paddleTop, paddleRight, paddleBottom);
 
+		// Move paddle based on user input
 		if(getButtonPress(buttonLeft)) {
 			paddleLeft -= paddleSpeed;
 			paddleRight -= paddleSpeed;
@@ -69,10 +75,12 @@ task main()
 
 		paddle2Active = false;
 		if(paddleLeft < 0) {
+			// Loop paddle off the left edge back onto the right edge
 			if(paddleRight < 0) {
 				paddleLeft += xMax;
 				paddleRight += xMax;
 			}
+			// Split paddle across both left and right sides of the screen
 			else {
 				paddle2Active = true;
 				paddle2Left = paddleLeft + xMax;
@@ -81,10 +89,12 @@ task main()
 			}
 		}
 		else if(paddleRight > xMax) {
+			// Loop paddle off the right edge back onto the left edge
 			if(paddleLeft > xMax) {
 				paddleLeft -= xMax;
 				paddleRight -= xMax;
 			}
+			// Split paddle across both left and right sides of the screen
 			else {
 				paddle2Active = true;
 				paddle2Left = paddleLeft - xMax;
@@ -96,7 +106,7 @@ task main()
 		ballXPos += xSpeed;
 		ballYPos += ySpeed;
 
-		// Bounce ball
+		// Bounce ball off edges
 		if(ballXPos <= 0 || ballXPos >= xMax) {
 			xSpeed = -xSpeed;
 		}
@@ -104,6 +114,7 @@ task main()
 			ySpeed = -ySpeed;
 		}
 
+		// Bounce ball off paddle
 		if(ballYPos-(ballDiameter/2) <= paddleTop && ySpeed < 0) {
 
 			if(paddleBounce(ballXPos, paddleLeft, paddleRight)) {
@@ -154,6 +165,5 @@ task main()
 		}
 
 	}
-
 
 }
