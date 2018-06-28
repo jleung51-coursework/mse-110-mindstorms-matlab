@@ -21,8 +21,9 @@ key_index = 0
 for key in barcode_keys:
     reversed_key = int(''.join(reversed(str(key))))
     if reversed_key in barcode_keys:
-		reversed_key_index = barcode_keys.index(reversed_key)
-		if key_index < reversed_key_index:
-		    print(str(barcode_values[key_index]) + " backwards equals " +
-                    str(barcode_values[reversed_key_index]) + " forwards")
+        reversed_key_index = barcode_keys.index(reversed_key)
+        if key_index < reversed_key_index:
+            print(str(barcode_values[key_index]) + " backwards is " +
+                "equivalent to " + str(barcode_values[reversed_key_index]) +
+                " forwards")
     key_index += 1
