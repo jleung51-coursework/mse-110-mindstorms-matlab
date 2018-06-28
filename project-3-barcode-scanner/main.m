@@ -27,6 +27,13 @@ barcode_keys = [ ...
    111111333 311111331 113111331 111131331 ...
    331111113 133111113 333111111 131131113 ...
    331131111 133131111 ];
+% Equivalent values:
+%   K backwards equals U forwards
+%   N backwards equals Y forwards
+%   O backwards equals X forwards
+%   Q backwards equals W forwards
+%   R backwards equals V forwards
+%   T backwards equals Z forwards
 
 % Uncomment the following lines to decode and print out the barcode keys of
 % the files in this directory
