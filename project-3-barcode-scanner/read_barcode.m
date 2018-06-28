@@ -20,7 +20,7 @@ if strcmp('csv', extension) || strcmp('txt', extension)
 
   % Set variables calibrated for ROBOTC scanning
   average_length = 30;
-  min_peak_height = 0.4;
+  min_peak_height = 0.09;
   min_peak_distance_base = 25;
 
 elseif strcmp('jpg', extension) || ...
@@ -71,7 +71,7 @@ fprintf('[DEBUG  ] Number of peaks found in first search: %d\n', numel(peaks));
 % Calculate the optimal peak distance (varies based on size of barcode)
 total_units = 15;
 range = locations(numel(locations)) - locations(1);
-min_peak_distance = (range/total_units) * 0.85;
+min_peak_distance = (range/total_units) * 0.6;
 fprintf('[DEBUG  ] Optimal peak distance: %d\n', min_peak_distance);
 
 % Locate actual peaks
