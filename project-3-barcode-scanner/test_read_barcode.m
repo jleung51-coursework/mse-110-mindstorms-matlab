@@ -34,10 +34,22 @@ barcodes = { ...
     'sample-barcode-scans/input_letter_A_large_forwards.csv' '1' 'A'
     'sample-barcode-scans/input_letter_A_medium_backwards.csv' '1' 'A'
     'sample-barcode-scans/input_letter_A_medium_forwards.csv' '1' 'A'
+    'sample-barcode-scans/input_letter_A_medium_forwards_broken.csv' '0' 'Nothing'
+    'sample-barcode-scans/input_letter_C_large_backwards.csv' '1' 'C'
+    'sample-barcode-scans/input_letter_H_medium_backwards.csv' '1' 'H'
+    'sample-barcode-scans/input_letter_H_medium_forwards.csv' '1' 'H'
+    'sample-barcode-scans/input_letter_I_medium_backwards.csv' '1' 'I'
+    'sample-barcode-scans/input_letter_I_medium_forwards.csv' '1' 'I'
     'sample-barcode-scans/input_letter_K_medium_backwards.csv' '1' 'K'
     'sample-barcode-scans/input_letter_K_medium_forwards.csv' '1' 'K'
-    'sample-barcode-scans/input_letter_A_medium_forwards_broken.csv' '0' 'Nothing'
-    ...
+    'sample-barcode-scans/input_letter_N_medium_forwards.csv' '1' 'N'
+    'sample-barcode-scans/input_letter_O_medium_forwards.csv' '1' 'O'
+    'sample-barcode-scans/input_letter_Q_medium_forwards.csv' '1' 'Q'
+    'sample-barcode-scans/input_letter_T_medium_backwards.csv' '1' 'T'
+    'sample-barcode-scans/input_letter_V_medium_forwards.csv' '1' 'V'
+    'sample-barcode-scans/input_letter_W_medium_forwards.csv' '1' 'W'
+    'sample-barcode-scans/input_letter_X_medium_forwards.csv' '1' 'X'
+    'sample-barcode-scans/input_letter_Y_medium_forwards.csv' '1' 'Y'
     };
 
 tests = 0;
