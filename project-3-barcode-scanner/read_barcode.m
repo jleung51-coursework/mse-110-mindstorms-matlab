@@ -14,7 +14,7 @@ fprintf('[DEBUG  ] Reading barcode from file: %s\n', filename);
 
 extension = filename([end-2:end]);
 fprintf('[DEBUG  ] File extension detected: %s\n', extension);
-if strcmp('csv', extension)
+if strcmp('csv', extension) || strcmp('txt', extension)
   data = csvread(filename);
   data = data';
 
@@ -81,13 +81,14 @@ fprintf('[DEBUG  ] Optimal peak distance: %d\n', min_peak_distance);
     'MinPeakDistance', min_peak_distance);
 fprintf('[DEBUG  ] Number of peaks found in optimal search: %d\n', numel(peaks));
 
+% Too many peaks
 while numel(peaks) > 10
   index = find(peaks == min(peaks));
   index = index(1);
   fprintf('[DEBUG  ] Too many peaks, removing %d at index %d\n', min(peaks), index);
   peaks(index) = [];
   locations(index) = [];
-end;
+end
 
 %plot(data); hold on;
 %plot(data_averaged); hold on;
