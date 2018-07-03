@@ -27,13 +27,7 @@ barcode_keys = [ ...
    111111333 311111331 113111331 111131331 ...
    331111113 133111113 333111111 131131113 ...
    331131111 133131111 ];
-% Equivalent values:
-%   K backwards equals U forwards
-%   N backwards equals Y forwards
-%   O backwards equals X forwards
-%   Q backwards equals W forwards
-%   R backwards equals V forwards
-%   T backwards equals Z forwards
+barcode_reversibles = {'KU', 'NY', 'OX', 'QW', 'RV', 'TZ'};
 
 % Uncomment the following lines to decode and print out the barcode keys of
 % the files in this directory
@@ -58,5 +52,18 @@ end
 if isempty(index)
   fprintf('[INFO   ] Barcode not found.\n');
 else
-  fprintf('[INFO   ] Barcode: %s\n', barcode_values(index));
+  value = barcode_values(index);
+
+  equivalence = '';
+  for i = 1:numel(barcode_reversibles)
+      char_first = barcode_reversibles{i}(1);
+      char_second = barcode_reversibles{i}(2);
+      if strcmp(char_first, value)
+          equivalence = ['(Equivalent to ', char_second, ' reversed)'];
+      elseif strcmp(char_second, value)
+          equivalence = ['(Equivalent to ', char_first, ' reversed)'];
+      end
+  end
+
+  fprintf('[INFO   ] Barcode: %s %s\n', value, equivalence);
 end
