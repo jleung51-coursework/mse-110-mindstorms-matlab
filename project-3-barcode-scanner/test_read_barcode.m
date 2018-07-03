@@ -146,11 +146,9 @@ end
 fprintf('[INFO   ] --------------------------------------------------------\n');
 fprintf('\n');
 
-%{
 if failures ~= 0
-  error("%d tests failed.", failures);
+  error('%d tests failed.', failures);
 end
-%}
 
 end
 

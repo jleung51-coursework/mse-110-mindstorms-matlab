@@ -3,7 +3,7 @@
 image: atlassian/default-image:1
 
 options:
-  max-time: 8
+  max-time: 9
 
 pipelines:
   default:
