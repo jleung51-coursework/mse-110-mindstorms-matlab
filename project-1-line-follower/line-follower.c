@@ -8,6 +8,18 @@
 *
 */
 
+#define NOTROBOTC  // Comment this out if running with the ROBOTC compiler
+
+#include "../robotc_dummy.h"
+
+// Replace ROBOTC-specific variables defined at top of file
+#ifdef NOTROBOTC
+const int ColorSensor = 0;
+const int UltrasonicSensor = 0;
+const int LeftMotor = 0;
+const int RightMotor = 0;
+#endif
+
 // Max speed is 100 or -100
 const int speed = 25;
 // Black if less than threshold; white if greater than threshold
@@ -18,10 +30,12 @@ const int turn_threshold = 30;
 int persistent_black = 0;
 int persistent_white = 0;
 
+bool isBlack(int val);
 bool isBlack(int val) {
 	return val < reflectionThreshold;
 }
 
+void pushAwayObject();
 void pushAwayObject() {
 	// Stop
 	setMotorSpeed(LeftMotor, 0);
@@ -70,11 +84,15 @@ task main()
 	setMotorSpeed(LeftMotor, speed);
 	setMotorSpeed(RightMotor, speed);
 
-	while (true) {
+	#ifdef NOTROBOTC
+	for(int notRobotcCounter; notRobotcCounter < 35000; ++notRobotcCounter) {
+	#else
+	while(true) {
+	#endif
 
 		int colorReflected = getColorReflected(ColorSensor);
 		displayCenteredTextLine(5, "%d", colorReflected);
-		
+
 		if (getUSDistance(UltrasonicSensor) <= 15){
 			pushAwayObject();
 		}

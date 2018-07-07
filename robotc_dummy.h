@@ -29,7 +29,7 @@ void displayTextLine(const int nLineNumber, char* sFormatString, ...) {
   vprintf(sFormatString, args);
   va_end(args);
   printf("\n");
-};
+}
 
 void displayCenteredTextLine(const int nLineNumber, char* sFormatString, ...);
 void displayCenteredTextLine(const int nLineNumber, char* sFormatString, ...) {
@@ -38,7 +38,7 @@ void displayCenteredTextLine(const int nLineNumber, char* sFormatString, ...) {
   vprintf(sFormatString, args);
   va_end(args);
   printf("\n");
-};
+}
 
 void displayCenteredBigTextLine(
   const int nLineNumber,
@@ -55,7 +55,7 @@ void displayCenteredBigTextLine(
 }
 
 void drawCircle(const int centerX, const int centerY, const int radius);
-void drawCircle(const int centerX, const int centerY, const int radius) {};
+void drawCircle(const int centerX, const int centerY, const int radius) {}
 
 void drawRect(
   const int left, const int top,
@@ -64,10 +64,10 @@ void drawRect(
 void drawRect(
   const int left, const int top,
   const int right, const int bottom
-) {};
+) {}
 
 void eraseDisplay();
-void eraseDisplay(){};
+void eraseDisplay(){}
 
 // Datalog
 bool datalogOpen(long nDatalogIndex, long nColumns, bool bAppend);
@@ -81,10 +81,10 @@ bool datalogAddShort(long nIndex, short data) {
 }
 
 void datalogFlush();
-void datalogFlush(){};
+void datalogFlush(){}
 
 void datalogClose();
-void datalogClose(){};
+void datalogClose(){}
 
 // Sensors (buttons)
 typedef enum
@@ -102,15 +102,37 @@ bool getButtonPress(int button) {
 short getColorReflected(int sensor);
 short getColorReflected(int sensor) {
   return 0;
-};
+}
 
-// Actuators (motors)
+float getUSDistance(int nDeviceIndex);
+float getUSDistance(int nDeviceIndex) {
+  return 0;
+}
+
+int getMotorSpeed(int nMotorIndex);
+int getMotorSpeed(int nMotorIndex) {
+  return 0;
+}
+
+// Actuators
 void setMotorSpeed(int motor, int speed);
-void setMotorSpeed(int motor, int speed) {};
+void setMotorSpeed(int motor, int speed) {}
+
+void resetMotorEncoder(int nMotorIndex);
+void resetMotorEncoder(int nMotorIndex) {}
+
+void setMotorTarget(int nMotorIndex, float nPosition, int nspeed);
+void setMotorTarget(int nMotorIndex, float nPosition, int nspeed) {}
+
+void waitUntilMotorStop(int nMotorIndex);
+void waitUntilMotorStop(int nMotorIndex){}
+
+void playTone(int frequency, int durationIn10MsecTicks);
+void playTone(int frequency, int durationIn10MsecTicks) {}
 
 // Other functions
 void sleep();
-void sleep(){};
+void sleep(){}
 
 int random();
 int random() {

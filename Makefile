@@ -23,6 +23,7 @@ OUTPUT = program.out
 help:
 	@echo "INSTRUCTIONS:"
 	@echo "  To test Exercise 1 (pong), run: make pong"
+	@echo "  To test Project 1 (line follower), run: make follower"
 	@echo "  To test Project 3 (barcode scanner), run: make scanner"
 	@echo "  To remove compiled output files, run: make clean"
 
@@ -36,6 +37,11 @@ help:
 # $ make pong
 pong: exercise-1-pong/pong.o
 	$(GCC) pong.o -o $(OUTPUT)
+	@echo "To execute the program, run: ./$(OUTPUT)"
+
+# $ make follower
+follower: project-1-line-follower/line-follower.o
+	$(GCC) line-follower.o -o $(OUTPUT)
 	@echo "To execute the program, run: ./$(OUTPUT)"
 
 # $ make scanner
