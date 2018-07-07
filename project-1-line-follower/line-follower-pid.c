@@ -9,6 +9,18 @@
  *
  */
 
+ #define NOTROBOTC  // Comment this out if running with the ROBOTC compiler
+
+ #include "../robotc_dummy.h"
+
+ // Replace ROBOTC-specific variables defined at top of file
+ #ifdef NOTROBOTC
+ const int ColorSensor = 0;
+ const int UltrasonicSensor = 0;
+ const int LeftMotor = 0;
+ const int RightMotor = 0;
+ #endif
+
 // ---------- CONFIGURATION VARIABLES ----------
 
 // Max speed is 100 or -100
@@ -36,6 +48,7 @@ typedef struct {
 bool isBlack(int val);
 void copySpeed(speed* to, speed from);
 void setSpeed(speed* s, int left_motor, int right_motor);
+void addSpeed(speed* s, speed add);
 void applySpeed(speed s);
 float getPercentDeviation(int color_reflected);
 
@@ -96,7 +109,11 @@ task main()
 	int persistent_black = 0;
 	int persistent_white = 0;
 
-	while (true) {
+	#ifdef NOTROBOTC
+	for(int notRobotcCounter; notRobotcCounter < 100; ++notRobotcCounter) {
+	#else
+	while(true) {
+	#endif
 
 		int color_reflected = getColorReflected(ColorSensor);
 		// Cap sensor values
