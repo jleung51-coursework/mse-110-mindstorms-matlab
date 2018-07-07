@@ -16,16 +16,14 @@
 // Types
 typedef int task;
 
-typedef enum
-{
+typedef enum {
   false,
   true
 } bool;
 
 // Display
 void displayTextLine(const int nLineNumber, char* sFormatString, ...);
-void displayTextLine(const int nLineNumber, char* sFormatString, ...)
-{
+void displayTextLine(const int nLineNumber, char* sFormatString, ...) {
   va_list args;
   va_start(args, sFormatString);
   vprintf(sFormatString, args);
@@ -34,8 +32,7 @@ void displayTextLine(const int nLineNumber, char* sFormatString, ...)
 };
 
 void displayCenteredTextLine(const int nLineNumber, char* sFormatString, ...);
-void displayCenteredTextLine(const int nLineNumber, char* sFormatString, ...)
-{
+void displayCenteredTextLine(const int nLineNumber, char* sFormatString, ...) {
   va_list args;
   va_start(args, sFormatString);
   vprintf(sFormatString, args);
@@ -43,16 +40,13 @@ void displayCenteredTextLine(const int nLineNumber, char* sFormatString, ...)
   printf("\n");
 };
 
-void displayCenteredBigTextLine
-(
+void displayCenteredBigTextLine(
   const int nLineNumber,
   char* sFormatString, ...
 );
-void displayCenteredBigTextLine
-(
+void displayCenteredBigTextLine(
   const int nLineNumber,
-  char* sFormatString, ...
-) {
+  char* sFormatString, ...) {
   va_list args;
   va_start(args, sFormatString);
   vprintf(sFormatString, args);
@@ -63,13 +57,11 @@ void displayCenteredBigTextLine
 void drawCircle(const int centerX, const int centerY, const int radius);
 void drawCircle(const int centerX, const int centerY, const int radius) {};
 
-void drawRect
-(
+void drawRect(
   const int left, const int top,
   const int right, const int bottom
 );
-void drawRect
-(
+void drawRect(
   const int left, const int top,
   const int right, const int bottom
 ) {};
@@ -79,14 +71,12 @@ void eraseDisplay(){};
 
 // Datalog
 bool datalogOpen(long nDatalogIndex, long nColumns, bool bAppend);
-bool datalogOpen(long nDatalogIndex, long nColumns, bool bAppend)
-{
+bool datalogOpen(long nDatalogIndex, long nColumns, bool bAppend) {
   return true;
 }
 
 bool datalogAddShort(long nIndex, short data);
-bool datalogAddShort(long nIndex, short data)
-{
+bool datalogAddShort(long nIndex, short data) {
   return true;
 }
 
@@ -104,8 +94,7 @@ typedef enum
   buttonRight
 } buttonTypes;
 bool getButtonPress(int button);
-bool getButtonPress(int button)
-{
+bool getButtonPress(int button) {
   return true;
 }
 
@@ -124,8 +113,7 @@ void sleep();
 void sleep(){};
 
 int random();
-int random()
-{
+int random() {
   return 1;
 }
 
