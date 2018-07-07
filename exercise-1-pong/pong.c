@@ -3,6 +3,14 @@
 *
 */
 
+#define NOTROBOTC
+
+#include "../robotc_dummy.h"
+
+// Function definitions
+bool paddleBounce(int ballXPos, int paddleLeft, int paddleRight);
+void menuScreen();
+
 // Returns whether or not the ball is in contact with the paddle by x-position
 bool paddleBounce(int ballXPos, int paddleLeft, int paddleRight) {
 	return paddleLeft <= ballXPos && ballXPos <= paddleRight;
@@ -54,7 +62,11 @@ task main()
 
 	menuScreen();
 
+	#ifdef NOTROBOTC
+	for(int notRobotcCounter; notRobotcCounter < 5; ++notRobotcCounter) {
+	#else
 	while(true) {
+	#endif
 
 		sleep(10);
 		eraseDisplay();

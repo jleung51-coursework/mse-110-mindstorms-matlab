@@ -22,7 +22,17 @@ typedef enum
   true
 } bool;
 
-// Text display
+// Display
+void displayTextLine(const int nLineNumber, char* sFormatString, ...);
+void displayTextLine(const int nLineNumber, char* sFormatString, ...)
+{
+  va_list args;
+  va_start(args, sFormatString);
+  vprintf(sFormatString, args);
+  va_end(args);
+  printf("\n");
+};
+
 void displayCenteredTextLine(const int nLineNumber, char* sFormatString, ...);
 void displayCenteredTextLine(const int nLineNumber, char* sFormatString, ...)
 {
@@ -32,6 +42,40 @@ void displayCenteredTextLine(const int nLineNumber, char* sFormatString, ...)
   va_end(args);
   printf("\n");
 };
+
+void displayCenteredBigTextLine
+(
+  const int nLineNumber,
+  char* sFormatString, ...
+);
+void displayCenteredBigTextLine
+(
+  const int nLineNumber,
+  char* sFormatString, ...
+) {
+  va_list args;
+  va_start(args, sFormatString);
+  vprintf(sFormatString, args);
+  va_end(args);
+  printf("\n");
+}
+
+void drawCircle(const int centerX, const int centerY, const int radius);
+void drawCircle(const int centerX, const int centerY, const int radius) {};
+
+void drawRect
+(
+  const int left, const int top,
+  const int right, const int bottom
+);
+void drawRect
+(
+  const int left, const int top,
+  const int right, const int bottom
+) {};
+
+void eraseDisplay();
+void eraseDisplay(){};
 
 // Datalog
 bool datalogOpen(long nDatalogIndex, long nColumns, bool bAppend);
@@ -53,7 +97,12 @@ void datalogClose();
 void datalogClose(){};
 
 // Sensors (buttons)
-const int buttonAny = 0;
+typedef enum
+{
+  buttonAny,
+  buttonLeft,
+  buttonRight
+} buttonTypes;
 bool getButtonPress(int button);
 bool getButtonPress(int button)
 {
@@ -69,5 +118,15 @@ short getColorReflected(int sensor) {
 // Actuators (motors)
 void setMotorSpeed(int motor, int speed);
 void setMotorSpeed(int motor, int speed) {};
+
+// Other functions
+void sleep();
+void sleep(){};
+
+int random();
+int random()
+{
+  return 1;
+}
 
 #endif

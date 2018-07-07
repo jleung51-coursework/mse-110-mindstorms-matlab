@@ -22,6 +22,7 @@ OUTPUT = program.out
 # $ 'make' or 'make help'
 help:
 	@echo "INSTRUCTIONS:"
+	@echo "  To test Exercise 1 (pong), run: make pong"
 	@echo "  To test Project 3 (barcode scanner), run: make scanner"
 	@echo "  To remove compiled output files, run: make clean"
 
@@ -32,7 +33,12 @@ help:
 %.o: %.c $(HEADERS)  #TODO Use the path to the .c files, while keeping %.c - e.g. ../src/%.c
 	$(GCC) $(CFLAGS) $<
 
-# $ make output
+# $ make pong
+pong: exercise-1-pong/pong.o
+	$(GCC) pong.o -o $(OUTPUT)
+	@echo "To execute the program, run: ./$(OUTPUT)"
+
+# $ make scanner
 scanner: project-3-barcode-scanner/scanner.o
 	$(GCC) scanner.o -o $(OUTPUT)
 	@echo "To execute the program, run: ./$(OUTPUT)"
