@@ -9,6 +9,21 @@
  *
  */
 
+ #define NOTROBOTC  // Comment this out if running with the ROBOTC compiler
+
+ #include "../robotc_dummy.h"
+
+// Replace ROBOTC-specific variables defined at top of file
+#ifdef NOTROBOTC
+const int ColorSensor = 0;
+const int UltrasonicSensor = 0;
+const int LeftMotor = 0;
+const int RightMotor = 0;
+#endif
+
+// Function prototypes
+void setSpeed(int left_motor_speed, int right_motor_speed);
+
 const int threshold_white = 10;
 
 void setSpeed(int left_motor_speed, int right_motor_speed) {
@@ -23,7 +38,12 @@ task main()
 	int oscillation = min;
 	bool increasing = true;
 
+	#ifdef NOTROBOTC
+	for(int notRobotcCounter; notRobotcCounter < 200; ++notRobotcCounter) {
+	#else
 	while(true) {
+	#endif
+
 		int color_reflected = getColorReflected(ColorSensor);
 		displayCenteredTextLine(3, "Color: %d", color_reflected);
 

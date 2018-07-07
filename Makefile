@@ -25,6 +25,7 @@ help:
 	@echo "  To test Exercise 1 (pong), run: make pong"
 	@echo "  To test Project 1 (line follower), run: make follower"
 	@echo "  To test Project 1 (line follower PID), run: make follower-pid"
+	@echo "  To test Project 2 (combat), run: make combat"
 	@echo "  To test Project 3 (barcode scanner), run: make scanner"
 	@echo "  To remove compiled output files, run: make clean"
 
@@ -48,6 +49,11 @@ follower: project-1-line-follower/line-follower.o
 # $ make follower-pid
 follower-pid: project-1-line-follower/line-follower-pid.o
 	$(GCC) line-follower-pid.o -o $(OUTPUT)
+	@echo "To execute the program, run: ./$(OUTPUT)"
+
+# $ make combat
+combat: project-2-combat/combat.o
+	$(GCC) combat.o -o $(OUTPUT)
 	@echo "To execute the program, run: ./$(OUTPUT)"
 
 # $ make scanner
