@@ -3,10 +3,21 @@
 #pragma config(Motor,  motorD,          leftMotor,     tmotorEV3_Large, PIDControl, driveLeft, encoder)
 
 /**
- * This Lego Mindstorms EV3 ROBOTC program moves forward to scan a barcode
- * outputs the values to the datalog (datalog-0)
+ * This Lego Mindstorms EV3 ROBOTC program moves forward to scan a barcode and
+ * outputs the values to the datalog (datalog-0.txt).
  *
  */
+
+#define NOTROBOTC  // Comment this out if running with the ROBOTC compiler
+
+#include "../robotc_dummy.h"
+
+// Replace ROBOTC-specific variables defined at top of file
+#ifdef NOTROBOTC
+const int ColorSensor = 0;
+const int rightMotor = 0;
+const int leftMotor = 0;
+#endif
 
 const unsigned int samplingDelay = 4;
 const int speed = 25;
@@ -49,4 +60,5 @@ task main()
 	}
 
 	datalogClose();
+	return 0;
 }
