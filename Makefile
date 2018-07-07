@@ -22,19 +22,23 @@ OUTPUT = program.out
 # $ 'make' or 'make help'
 help:
 	@echo "INSTRUCTIONS:"
-	@echo "  To test Exercise 1 (pong), run: make pong"
-	@echo "  To test Project 1 (line follower), run: make follower"
-	@echo "  To test Project 1 (line follower PID), run: make follower-pid"
-	@echo "  To test Project 2 (combat), run: make combat"
-	@echo "  To test Project 3 (barcode scanner), run: make scanner"
+	@echo "  To compile all files, run: make all"
+	@echo "  To compile Exercise 1 (pong), run: make pong"
+	@echo "  To compile Project 1 (line follower), run: make follower"
+	@echo "  To compile Project 1 (line follower PID), run: make follower-pid"
+	@echo "  To compile Project 2 (combat), run: make combat"
+	@echo "  To compile Project 3 (barcode scanner), run: make scanner"
 	@echo "  To remove compiled output files, run: make clean"
 
 # Executed whenever an object file is out of date
 # Symbols:
 #   % refers to any character(s)
 #   $< refers to the first item in the dependency list
-%.o: %.c $(HEADERS)  #TODO Use the path to the .c files, while keeping %.c - e.g. ../src/%.c
+%.o: %.c $(HEADERS)
 	$(GCC) $(CFLAGS) $<
+
+# $ make all
+all: pong follower follower-pid combat scanner
 
 # $ make pong
 pong: exercise-1-pong/pong.o

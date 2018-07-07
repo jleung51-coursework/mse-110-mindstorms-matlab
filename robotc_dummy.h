@@ -1,8 +1,8 @@
 /**
  * This C header file provides dummy definitions for types and functions
  * specific to the Lego Mindstorms EV3 ROBOTC version of C.
- * Including this file allows a file written in ROBOTC to be succesfully
- * compiled (but likely not run);
+ * Including this file allows a file written in ROBOTC to be successfully
+ * compiled and run (likely with incomprehensible or illogical results).
  *
  */
 

@@ -8,6 +8,10 @@ options:
 pipelines:
   default:
     - step:
+        name: Compile all ROBOTC files
+        script:
+          - make all clean
+    - step:
         name: Project 3 Barcode Scanner - Tests
         script:
           - sudo add-apt-repository ppa:octave/stable
