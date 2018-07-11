@@ -35,13 +35,13 @@ barcodeReversibles = {'KU', 'NY', 'OX', 'QW', 'RV', 'TZ'};
 barcodeFilenames = cell(numel(barcodeValues), 1);
 for i = 1:numel(barcodeFilenames)
   barcodeFilenames{i} = [ ...
-      strcat('sample-barcodes/letter_', num2str(barcodeValues(i)), '_noisy.jpg') ...
+      strcat('../data/sample-barcodes/letter_', num2str(barcodeValues(i)), '_noisy.jpg') ...
   ];
 end
 barcodeKeys = savebarcodes(barcodeFilenames)
 %}
 
-code = readbarcode('datalog-0.txt');
+code = readbarcode('../data/datalog-0.txt');
 
 index = find(barcodeKeys == code);
 

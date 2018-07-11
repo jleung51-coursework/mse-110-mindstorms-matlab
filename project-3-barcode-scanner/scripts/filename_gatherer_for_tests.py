@@ -7,7 +7,7 @@
 import os
 
 def print_formatted_filenames(dir_name):
-    filenames = os.listdir(os.path.abspath(__file__ + "/../../" + dir_name))
+    filenames = os.listdir(os.path.abspath(__file__ + "/../" + dir_name))
     filenames.sort()
 
     for line in filenames:
@@ -27,6 +27,6 @@ def print_formatted_filenames(dir_name):
         print("\'" + dir_name + "/" + line + "\' \'" + test_result +
                 "\' \'" + test_comparison + "\'")
 
-print_formatted_filenames("sample-barcode-pics")
+print_formatted_filenames("../data/sample-barcode-pics")
 print("...")
-print_formatted_filenames("sample-barcode-scans")
+print_formatted_filenames("../data/sample-barcode-scans")
