@@ -9,7 +9,7 @@
 %   filename: File in the current directory with the barcode to be read
 % Returns a number: Barcode value of the file given (e.g. 113133111).
 
-function retval = read_barcode(filename);
+function retval = readbarcode(filename);
 fprintf('[DEBUG  ] Reading barcode from file: %s\n', filename);
 
 extension = filename([end-2:end]);

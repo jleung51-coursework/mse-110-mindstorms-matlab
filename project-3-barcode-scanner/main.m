@@ -38,10 +38,10 @@ for i = 1:numel(barcodeFilenames)
       strcat('sample-barcodes/letter_', num2str(barcodeValues(i)), '_noisy.jpg') ...
   ];
 end
-barcodeKeys = save_barcodes(barcodeFilenames)
+barcodeKeys = savebarcodes(barcodeFilenames)
 %}
 
-code = read_barcode('datalog-0.txt');
+code = readbarcode('datalog-0.txt');
 
 index = find(barcodeKeys == code);
 

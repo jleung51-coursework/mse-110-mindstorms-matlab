@@ -1,6 +1,6 @@
 % This MATLAB program tests the function read_barcode.
 
-function retval = test_read_barcode();
+function retval = testreadbarcode();
 
 % Octave-specific commands
 isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
@@ -87,8 +87,8 @@ for i = 1:size(barcodes, 1)  % Number of rows
     tests = tests + 1;
 
     filename = char(barcodes(i, 1));
-    barcode = read_barcode(filename);
-    val = decode_barcode(barcode);
+    barcode = readbarcode(filename);
+    val = decodebarcode(barcode);
 
     assertTrue = strcmp('1', char(barcodes(i, 2)));
     if assertTrue
@@ -153,7 +153,7 @@ end
 end
 
 % This function returns the value of a barcode, or [] if the barcode is invalid.
-function retval = decode_barcode(code)
+function retval = decodebarcode(code)
 
   barcodeValues = [ ...
     'A' 'B' 'C' 'D' ...
