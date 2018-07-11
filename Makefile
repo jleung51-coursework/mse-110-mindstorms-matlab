@@ -21,13 +21,13 @@ OUTPUT = program.out
 
 # $ 'make' or 'make help'
 help:
-	@echo "INSTRUCTIONS:"
-	@echo "  To compile all files, run: make all"
+	@echo "ROBOTC MAKEFILE INSTRUCTIONS:"
+	@echo "  To compile all ROBOTC files, run: make all"
 	@echo "  To compile Exercise 1 (pong), run: make pong"
 	@echo "  To compile Project 1 (line follower), run: make follower"
 	@echo "  To compile Project 1 (line follower PID), run: make follower-pid"
 	@echo "  To compile Project 2 (combat), run: make combat"
-	@echo "  To compile Project 3 (barcode scanner), run: make scanner"
+	@echo "  To compile Project 3 (barcode scanner - ROBOTC only), run: make scanner"
 	@echo "  To remove compiled output files, run: make clean"
 
 # Executed whenever an object file is out of date
