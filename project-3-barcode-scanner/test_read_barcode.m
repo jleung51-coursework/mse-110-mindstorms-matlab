@@ -3,8 +3,8 @@
 function retval = test_read_barcode();
 
 % Octave-specific commands
-is_octave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
-if is_octave
+isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
+if isOctave
   pkg load signal;
 end
 
@@ -90,8 +90,8 @@ for i = 1:size(barcodes, 1)  % Number of rows
     barcode = read_barcode(filename);
     val = decode_barcode(barcode);
 
-    assert_true = strcmp('1', char(barcodes(i, 2)));
-    if assert_true
+    assertTrue = strcmp('1', char(barcodes(i, 2)));
+    if assertTrue
       if strcmp(val, char(barcodes(i, 3)))
         fprintf( ...
             '[SUCCESS] File %s decoded to barcode %s\n', ...
@@ -155,7 +155,7 @@ end
 % This function returns the value of a barcode, or [] if the barcode is invalid.
 function retval = decode_barcode(code)
 
-  barcode_values = [ ...
+  barcodeValues = [ ...
     'A' 'B' 'C' 'D' ...
     'E' 'F' 'G' 'H' ...
     'I' 'J' 'K' 'L' ...
@@ -163,7 +163,7 @@ function retval = decode_barcode(code)
     'Q' 'R' 'S' 'T' ...
     'U' 'V' 'W' 'X' ...
     'Y' 'Z' ];
-  barcode_keys = [ ...
+  barcodeKeys = [ ...
    311113113 113113113 313113111 111133113 ...
    311133111 113133111 111113313 311113311 ...
    113113311 111133311 311111133 113111133 ...
@@ -172,14 +172,14 @@ function retval = decode_barcode(code)
    331111113 133111113 333111111 131131113 ...
    331131111 133131111 ];
 
-  index = find(barcode_keys == code);
+  index = find(barcodeKeys == code);
   if isempty(index)
-      index = find(barcode_keys == str2num(fliplr(num2str(code))));
+      index = find(barcodeKeys == str2num(fliplr(num2str(code))));
   end
 
   retval = [];
   if isempty(index) == false
-    retval = barcode_values(index);
+    retval = barcodeValues(index);
   end
 
 end
