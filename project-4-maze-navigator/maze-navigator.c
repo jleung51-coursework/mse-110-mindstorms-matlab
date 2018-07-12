@@ -3,6 +3,8 @@
 #pragma config(Motor,  motorA,          LeftMotor,     tmotorEV3_Large, PIDControl, driveLeft, encoder)
 #pragma config(Motor,  motorB,          RightMotor,    tmotorEV3_Large, PIDControl, driveRight, encoder)
 
+#include <stack.h>
+
 const int ROOM_DISTANCE = 3175;
 const int TURN_DISTANCE = 1275;
 const int US_DISTANCE_TO_WALL = 15;
@@ -38,11 +40,6 @@ typedef struct {
 typedef struct {
 	Room rooms[4][6];
 } Maze;
-
-typedef struct {
-  // TODO: Implement stack
-	int placeholder;
-} Stack;
 
 typedef struct {
 	Direction direction;
@@ -130,6 +127,14 @@ bool goForwards() {
 
 task main()
 {
+	Stack s;
+	const unsigned int len = 50;
+	DirectionMoved arr[len];
+	initializeStack(s, arr, len);
+
+	Robot robot;
+	robot.previousMoves = s;
+
 	while(true) {
 		displayCenteredTextLine(5, "Distance sensed: %d", getUSDistance(UltrasonicSensor));
 
