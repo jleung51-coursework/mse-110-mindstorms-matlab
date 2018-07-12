@@ -47,7 +47,7 @@ typedef struct {
 	Stack previousMoves;
 } Robot;
 
-void turnRight(){
+void turnRight(Robot r){
 	resetMotorEncoder(LeftMotor);
 	resetMotorEncoder(RightMotor);
 	setMotorTarget(LeftMotor, TURN_DISTANCE + 20, SPEED/2);
@@ -63,9 +63,11 @@ void turnRight(){
 	waitUntilMotorStop(RightMotor);
 
 	sleep(500);
+
+	push(r.previousMoves, Right);
 }
 
-void turnLeft(){
+void turnLeft(Robot r){
 	resetMotorEncoder(LeftMotor);
 	resetMotorEncoder(RightMotor);
 
@@ -82,9 +84,11 @@ void turnLeft(){
 	waitUntilMotorStop(RightMotor);
 
 	sleep(500);
+
+	push(r.previousMoves, Left);
 }
 
-bool goForwards() {
+bool goForwards(Robot r) {
 	resetMotorEncoder(LeftMotor);
  	resetMotorEncoder(RightMotor);
 
@@ -117,38 +121,57 @@ bool goForwards() {
 	// Motor inaccuracy correction
 	//*/
 	resetMotorEncoder(LeftMotor);
-	setMotorTarget(LeftMotor, 30, SPEED/10);
+	setMotorTarget(LeftMotor, 50, SPEED/10);
 	waitUntilMotorStop(LeftMotor);
 	//*/
 
 	sleep(100);
+	push(r.previousMoves, Forward);
 	return true;
 }
 
 task main()
 {
-	Stack s;
-	const unsigned int len = 50;
-	DirectionMoved arr[len];
-	initializeStack(s, arr, len);
+	datalogClose();
+	datalogFlush();
+	bool datalogOpenSuccess = datalogOpen(0, 1, false);
+	if (!datalogOpenSuccess) {
+		displayCenteredTextLine(6, "Unable to open datalog.");
+	}
+	else {
+		displayCenteredTextLine(6, "");
+	}
 
 	Robot robot;
-	robot.previousMoves = s;
+	const unsigned int len = 50;
+	DirectionMoved arr[len] = {
+		None, None, None, None, None,
+		None, None, None, None, None,
+		None, None, None, None, None,
+		None, None, None, None, None,
+		None, None, None, None, None,
+		None, None, None, None, None,
+		None, None, None, None, None,
+		None, None, None, None, None,
+		None, None, None, None, None,
+		None, None, None, None, None
+	};
+	initializeStack(robot.previousMoves, arr, len);
 
-	while(true) {
-		displayCenteredTextLine(5, "Distance sensed: %d", getUSDistance(UltrasonicSensor));
-
+	while(!getButtonPress(buttonAny)) {
+		displayStack(robot.previousMoves); sleep(500);
 		// No right wall
 		if(getUSDistance(UltrasonicSensor) > US_DISTANCE_TO_WALL) {
-			displayCenteredTextLine(3, "Turning right");
-			turnRight();
+			turnRight(robot);
+			datalogAddChar(0, 'R');
 		}
-		displayCenteredTextLine(3, "Going forwards");
-		bool result = goForwards();
-		displayCenteredTextLine(3, "Finished going forwards");
+		bool result = goForwards(robot);
+		datalogAddChar(0, 'F');
 		if(!result) {
-			displayCenteredTextLine(3, "Turning left");
-			turnLeft();
+			turnLeft(robot);
+			datalogAddChar(0, 'L');
 		}
 	}
+
+	datalogClose();
 }
