@@ -1,6 +1,6 @@
 # Bitbucket Pipelines configuration file
 
-image: jleung51/octave:0.1
+image: jleung51/octave:0.2
 
 options:
   max-time: 9
