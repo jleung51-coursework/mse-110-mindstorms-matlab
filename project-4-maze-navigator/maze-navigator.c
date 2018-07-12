@@ -3,7 +3,12 @@
 #pragma config(Motor,  motorA,          LeftMotor,     tmotorEV3_Large, PIDControl, driveLeft, encoder)
 #pragma config(Motor,  motorB,          RightMotor,    tmotorEV3_Large, PIDControl, driveRight, encoder)
 
+#include <map-essentials.h>
 #include <stack.h>
+
+const unsigned int INITIAL_X = 0;
+const unsigned int INITIAL_Y = 6;
+const Direction INITIAL_DIRECTION = EAST;
 
 const int ROOM_DISTANCE = 3175;
 const int TURN_DISTANCE = 1275;
@@ -16,18 +21,6 @@ enum WallStatus {
 	EDGE,
 	UNKNOWN
 };
-
-enum Direction{
-	NORTH,
-	SOUTH,
-	EAST,
-	WEST
-};
-
-typedef struct {
-	int x;
-	int y;
-} Location;
 
 typedef struct {
 	WallStatus north;
@@ -63,8 +56,7 @@ void turnRight(Robot r){
 	waitUntilMotorStop(RightMotor);
 
 	sleep(500);
-
-	push(r.previousMoves, Right);
+	r.direction = getDirectionRight(r.direction);
 }
 
 void turnLeft(Robot r){
@@ -84,8 +76,7 @@ void turnLeft(Robot r){
 	waitUntilMotorStop(RightMotor);
 
 	sleep(500);
-
-	push(r.previousMoves, Left);
+	r.direction = getDirectionLeft(r.direction);
 }
 
 bool goForwards(Robot r) {
@@ -126,7 +117,25 @@ bool goForwards(Robot r) {
 	//*/
 
 	sleep(100);
-	push(r.previousMoves, Forward);
+
+	Location newRoom;
+	newRoom.x = xAtDirection(r.location, r.direction);
+	newRoom.y = yAtDirection(r.location, r.direction);
+
+	Location previousRoomOnStack;
+	previousRoomOnStack.x = peekX(r.previousMoves);
+	previousRoomOnStack.y = peekY(r.previousMoves);
+
+	if(equals(previousRoomOnStack, newRoom)) {
+		pop(r.previousMoves);
+	}
+	else {
+		push(r.previousMoves, r.location);
+	}
+	r.location = newRoom;
+
+	datalogAddShort(0, peekX(r.previousMoves));
+	datalogAddShort(1, peekY(r.previousMoves));
 	return true;
 }
 
@@ -143,33 +152,35 @@ task main()
 	}
 
 	Robot robot;
+
 	const unsigned int len = 50;
-	DirectionMoved arr[len] = {
-		None, None, None, None, None,
-		None, None, None, None, None,
-		None, None, None, None, None,
-		None, None, None, None, None,
-		None, None, None, None, None,
-		None, None, None, None, None,
-		None, None, None, None, None,
-		None, None, None, None, None,
-		None, None, None, None, None,
-		None, None, None, None, None
-	};
+	Location arr[len];
 	initializeStack(robot.previousMoves, arr, len);
 
+	setLocation(robot.location, INITIAL_X, INITIAL_Y);
+	robot.direction = INITIAL_DIRECTION;
+
 	while(!getButtonPress(buttonAny)) {
-		displayStack(robot.previousMoves); sleep(500);
+
+		displayStack(robot.previousMoves); sleep(1000);
 		// No right wall
 		if(getUSDistance(UltrasonicSensor) > US_DISTANCE_TO_WALL) {
 			turnRight(robot);
-			datalogAddChar(0, 'R');
 		}
+
+		displayCenteredTextLine(1, "Current X: %d", robot.location.x);
+		displayCenteredTextLine(2, "Current Y: %d", robot.location.y);
+		displayCenteredTextLine(3, "New X: %d", xAtDirection(robot.location, robot.direction));
+		displayCenteredTextLine(4, "New Y: %d", yAtDirection(robot.location, robot.direction));
+		string s;
+		directionToString(robot.direction, s);
+		displayCenteredTextLine(5, "Direction: %s", s);
+
+
+
 		bool result = goForwards(robot);
-		datalogAddChar(0, 'F');
 		if(!result) {
 			turnLeft(robot);
-			datalogAddChar(0, 'L');
 		}
 	}
 
