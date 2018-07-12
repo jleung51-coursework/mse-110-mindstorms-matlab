@@ -5,6 +5,7 @@
 
 const int ROOM_DISTANCE = 3175;
 const int TURN_DISTANCE = 1275;
+const int US_DISTANCE_TO_WALL = 15;
 const int SPEED = 100;
 
 enum WallStatus {
@@ -49,7 +50,7 @@ typedef struct {
 	Stack previousMoves;
 } Robot;
 
-void goRight(){
+void turnRight(){
 	resetMotorEncoder(LeftMotor);
 	resetMotorEncoder(RightMotor);
 	setMotorTarget(LeftMotor, TURN_DISTANCE + 20, SPEED/2);
@@ -64,10 +65,10 @@ void goRight(){
 	waitUntilMotorStop(LeftMotor);
 	waitUntilMotorStop(RightMotor);
 
-	sleep(100);
+	sleep(500);
 }
 
-void goLeft(){
+void turnLeft(){
 	resetMotorEncoder(LeftMotor);
 	resetMotorEncoder(RightMotor);
 
@@ -83,20 +84,18 @@ void goLeft(){
 	waitUntilMotorStop(LeftMotor);
 	waitUntilMotorStop(RightMotor);
 
-	sleep(100);
+	sleep(500);
 }
 
-int goForwards(){
-
+bool goForwards() {
 	resetMotorEncoder(LeftMotor);
  	resetMotorEncoder(RightMotor);
 
  	setMotorTarget(LeftMotor, -ROOM_DISTANCE, SPEED);
 	setMotorTarget(RightMotor, -ROOM_DISTANCE, SPEED);
 
-	while(getMotorEncoder(LeftMotor) < ROOM_DISTANCE && getMotorEncoder(RightMotor) < ROOM_DISTANCE) {
+	while(getMotorEncoder(LeftMotor) > -ROOM_DISTANCE || getMotorEncoder(RightMotor) > -ROOM_DISTANCE) {
 		int distanceMoved = getMotorEncoder(LeftMotor);
-		displayCenteredTextLine(5, "Starting: %d", getMotorEncoder(LeftMotor));
 
 		if (getTouchValue(TouchSensor)){
 			resetMotorEncoder(LeftMotor);
@@ -110,15 +109,23 @@ int goForwards(){
 			waitUntilMotorStop(LeftMotor);
 			waitUntilMotorStop(RightMotor);
 
-			displayCenteredTextLine(7, "End; %d", getMotorEncoder(LeftMotor));
-			displayCenteredTextLine(11, "Difference: %d", distanceMoved - getMotorEncoder(LeftMotor));
-			sleep(10000);
-			return 1;
+			sleep(500);
+			return false;
 		}
 	}
 
+	waitUntilMotorStop(LeftMotor);
+	waitUntilMotorStop(RightMotor);
+
+	// Motor inaccuracy correction
+	//*/
+	resetMotorEncoder(LeftMotor);
+	setMotorTarget(LeftMotor, 30, SPEED/10);
+	waitUntilMotorStop(LeftMotor);
+	//*/
+
 	sleep(100);
-	return 0;
+	return true;
 }
 
 task main()
