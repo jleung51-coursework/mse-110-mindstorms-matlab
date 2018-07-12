@@ -1,6 +1,6 @@
 # Bitbucket Pipelines configuration file
 
-image: atlassian/default-image:1
+image: jleung51/octave:0.1
 
 options:
   max-time: 9
@@ -14,9 +14,6 @@ pipelines:
     - step:
         name: Project 3 Barcode Scanner - Tests
         script:
-          - sudo add-apt-repository ppa:octave/stable
-          - sudo apt-get update
-          - sudo apt-get install -y octave liboctave-dev
           - cd project-3-barcode-scanner/
           - octave --no-gui setup.m
           - octave --no-gui test_read_barcode.m
