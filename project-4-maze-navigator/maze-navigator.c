@@ -130,6 +130,20 @@ bool goForwards() {
 
 task main()
 {
-	goForwards();
-	sleep(500);
+	while(true) {
+		displayCenteredTextLine(5, "Distance sensed: %d", getUSDistance(UltrasonicSensor));
+
+		// No right wall
+		if(getUSDistance(UltrasonicSensor) > US_DISTANCE_TO_WALL) {
+			displayCenteredTextLine(3, "Turning right");
+			turnRight();
+		}
+		displayCenteredTextLine(3, "Going forwards");
+		bool result = goForwards();
+		displayCenteredTextLine(3, "Finished going forwards");
+		if(!result) {
+			displayCenteredTextLine(3, "Turning left");
+			turnLeft();
+		}
+	}
 }
