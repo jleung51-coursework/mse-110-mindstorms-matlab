@@ -3,79 +3,86 @@
 #pragma config(Motor,  motorA,          LeftMotor,     tmotorEV3_Large, PIDControl, driveLeft, encoder)
 #pragma config(Motor,  motorB,          RightMotor,    tmotorEV3_Large, PIDControl, driveRight, encoder)
 
-int cellDistance = 3175;
-int cellDistanceTurn = 1275;
-int speed = 100;
+const int ROOM_DISTANCE = 3175;
+const int TURN_DISTANCE = 1275;
+const int SPEED = 100;
+
+enum WallStatus {
+	NONE,
+	NORMAL,
+	EDGE,
+	UNKNOWN
+};
+
+enum Direction{
+	NORTH,
+	SOUTH,
+	EAST,
+	WEST
+};
 
 typedef struct {
 	int x;
 	int y;
-} coordinate;
-
-typdef enum {
-	none, normal, edge, unknown	
-} wallStatus;
+} Location;
 
 typedef struct {
-	wallStatus north;
-	wallStatus east;
-	wallStatus south;
-	wallStatus west;
+	WallStatus north;
+	WallStatus east;
+	WallStatus south;
+	WallStatus west;
 	bool traversed;
-} room;
+} Room;
 
 typedef struct {
-	
-} stack;
-
-typedef enum {
-	north, south, east, west
-} direction;
+	Room rooms[4][6];
+} Maze;
 
 typedef struct {
-	room Rooms[4][6];
-} maze;
+  // TODO: Implement stack
+  int placeholder;
+} Stack;
 
 typedef struct {
-	direction direction;
-	coordinate coordinate;
-	stack previousMoves;
-} robot;
+	Direction direction;
+	Location location;
+	Stack previousMoves;
+} Robot;
 
 void goRight(){
 	resetMotorEncoder(LeftMotor);
 	resetMotorEncoder(RightMotor);
-	setMotorTarget(LeftMotor, cellDistanceTurn + 20, speed/2);
-	setMotorTarget(RightMotor, -(cellDistanceTurn + 20), speed/2);
+	setMotorTarget(LeftMotor, TURN_DISTANCE + 20, SPEED/2);
+	setMotorTarget(RightMotor, -(TURN_DISTANCE + 20), SPEED/2);
 	waitUntilMotorStop(LeftMotor);
 	waitUntilMotorStop(RightMotor);
-	
+
 	resetMotorEncoder(LeftMotor);
 	resetMotorEncoder(RightMotor);
-	setMotorTarget(LeftMotor, -65, speed/2);
-	setMotorTarget(RightMotor, -65, speed/2);
+	setMotorTarget(LeftMotor, -65, SPEED/2);
+	setMotorTarget(RightMotor, -65, SPEED/2);
 	waitUntilMotorStop(LeftMotor);
 	waitUntilMotorStop(RightMotor);
-	
+
 	sleep(100);
 }
 
 void goLeft(){
 	resetMotorEncoder(LeftMotor);
 	resetMotorEncoder(RightMotor);
-	
-	setMotorTarget(LeftMotor, -cellDistanceTurn, speed/2);
-	setMotorTarget(RightMotor, cellDistanceTurn, speed/2);
+
+	setMotorTarget(LeftMotor, -TURN_DISTANCE, SPEED/2);
+	setMotorTarget(RightMotor, TURN_DISTANCE, SPEED/2);
 	waitUntilMotorStop(LeftMotor);
 	waitUntilMotorStop(RightMotor);
-	
+
 	resetMotorEncoder(LeftMotor);
 	resetMotorEncoder(RightMotor);
-	setMotorTarget(LeftMotor, -65, speed/2);
-	setMotorTarget(RightMotor, -65, speed/2);
+	setMotorTarget(LeftMotor, -65, SPEED/2);
+	setMotorTarget(RightMotor, -65, SPEED/2);
 	waitUntilMotorStop(LeftMotor);
 	waitUntilMotorStop(RightMotor);
-	
+
 	sleep(100);
 }
 
@@ -84,37 +91,33 @@ int goForwards(){
 	resetMotorEncoder(LeftMotor);
  	resetMotorEncoder(RightMotor);
 
- 	setMotorTarget(LeftMotor, -cellDistance, speed);
-	setMotorTarget(RightMotor, -cellDistance, speed);
-	
-	while(getMotorEncoder(LeftMotor) < cellDistance && getMotorEncoder(RightMotor) < cellDistance) {
-			int distance = getMotorEncoder(LeftMotor);
+ 	setMotorTarget(LeftMotor, -ROOM_DISTANCE, SPEED);
+	setMotorTarget(RightMotor, -ROOM_DISTANCE, SPEED);
+
+	while(getMotorEncoder(LeftMotor) < ROOM_DISTANCE && getMotorEncoder(RightMotor) < ROOM_DISTANCE) {
+			int distanceMoved = getMotorEncoder(LeftMotor);
 			displayCenteredTextLine(5, "Starting: %d", getMotorEncoder(LeftMotor));
-			
+
 			if (getTouchValue(TouchSensor)){
 				resetMotorEncoder(LeftMotor);
 				resetMotorEncoder(RightMotor);
-				
-				setMotorTarget(LeftMotor, distance, speed);
-				setMotorTarget(RightMotor, distance, speed);
-				
+
+				setMotorTarget(LeftMotor, distanceMoved, SPEED);
+				setMotorTarget(RightMotor, distanceMoved, SPEED);
+
 				waitUntilMotorStop(LeftMotor);
 				waitUntilMotorStop(RightMotor);
-				
-				
+
+
 				displayCenteredTextLine(7, "End; %d", getMotorEncoder(LeftMotor));
-				displayCenteredTextLine(11, "Difference: %d", distance - getMotorEncoder(LeftMotor));
+				displayCenteredTextLine(11, "Difference: %d", distanceMoved - getMotorEncoder(LeftMotor));
 				sleep(10000);
 				return 1;
 		}
 	}
-	
+
 	sleep(100);
 	return 0;
-	
-	//waitUntilMotorStop(LeftMotor);
-	//waitUntilMotorStop(RightMotor);
-	
 }
 
 task main()
