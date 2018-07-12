@@ -14,7 +14,6 @@ pipelines:
     - step:
         name: Project 3 Barcode Scanner - Tests
         script:
-          - cd project-3-barcode-scanner/
-          - octave --no-gui setup.m
-          - octave --no-gui test_read_barcode.m
+          - cd project-3-barcode-scanner/matlab/
+          - octave --no-gui testreadbarcode.m
           - cd ../
