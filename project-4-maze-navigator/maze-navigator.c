@@ -40,7 +40,7 @@ typedef struct {
 
 typedef struct {
   // TODO: Implement stack
-  int placeholder;
+	int placeholder;
 } Stack;
 
 typedef struct {
@@ -95,24 +95,25 @@ int goForwards(){
 	setMotorTarget(RightMotor, -ROOM_DISTANCE, SPEED);
 
 	while(getMotorEncoder(LeftMotor) < ROOM_DISTANCE && getMotorEncoder(RightMotor) < ROOM_DISTANCE) {
-			int distanceMoved = getMotorEncoder(LeftMotor);
-			displayCenteredTextLine(5, "Starting: %d", getMotorEncoder(LeftMotor));
+		int distanceMoved = getMotorEncoder(LeftMotor);
+		displayCenteredTextLine(5, "Starting: %d", getMotorEncoder(LeftMotor));
 
-			if (getTouchValue(TouchSensor)){
-				resetMotorEncoder(LeftMotor);
-				resetMotorEncoder(RightMotor);
+		if (getTouchValue(TouchSensor)){
+			resetMotorEncoder(LeftMotor);
+			resetMotorEncoder(RightMotor);
+			setMotorSpeed(LeftMotor, 0);
+			setMotorSpeed(RightMotor, 0);
+			sleep(1000);
 
-				setMotorTarget(LeftMotor, distanceMoved, SPEED);
-				setMotorTarget(RightMotor, distanceMoved, SPEED);
+			setMotorTarget(LeftMotor, -distanceMoved, SPEED);
+			setMotorTarget(RightMotor, -distanceMoved, SPEED);
+			waitUntilMotorStop(LeftMotor);
+			waitUntilMotorStop(RightMotor);
 
-				waitUntilMotorStop(LeftMotor);
-				waitUntilMotorStop(RightMotor);
-
-
-				displayCenteredTextLine(7, "End; %d", getMotorEncoder(LeftMotor));
-				displayCenteredTextLine(11, "Difference: %d", distanceMoved - getMotorEncoder(LeftMotor));
-				sleep(10000);
-				return 1;
+			displayCenteredTextLine(7, "End; %d", getMotorEncoder(LeftMotor));
+			displayCenteredTextLine(11, "Difference: %d", distanceMoved - getMotorEncoder(LeftMotor));
+			sleep(10000);
+			return 1;
 		}
 	}
 
@@ -123,5 +124,5 @@ int goForwards(){
 task main()
 {
 	goForwards();
-  sleep(500);
+	sleep(500);
 }
