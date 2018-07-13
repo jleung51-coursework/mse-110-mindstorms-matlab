@@ -2,7 +2,7 @@
 
 This repository contains the projects for _MSE 110: Mechatronics Design I_ at Simon Fraser University for the Summer 2018 semester.
 
-The projects coded in **Lego Mindstorms EV3 ROBOTC** and **MATLAB**.
+The projects are coded in **Lego Mindstorms EV3 ROBOTC** and **MATLAB**.
 
 ## Setup
 
@@ -22,3 +22,10 @@ From the console in Octave, install the required packages for finding the data p
 pkg install -forge control
 pkg install -forge signal
 ```
+
+## Execution
+
+To test the compilation of the ROBOTC programs, run `make` and use any of the options that appear.  
+To run the ROBOTC programs, use the ROBOTC IDEs.
+
+To run the MATLAB programs, use the MATLAB or GNU Octave IDEs.
