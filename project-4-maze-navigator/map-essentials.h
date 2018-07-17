@@ -112,3 +112,21 @@ unsigned int yAtDirection(Location l, Direction d) {
 			return l.y;
 	}
 }
+
+Direction directionOfNewLocation(Location old, Location new) {
+	if(new.x < old.x) {
+		return WEST;
+	}
+	else if(new.x > old.x) {
+		return EAST;
+	}
+	else if(new.y < old.y) {
+		return NORTH;
+	}
+	else if(new.y > old.y) {
+		return SOUTH;
+	}
+	else {
+		return NONE;
+	}
+}
