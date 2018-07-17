@@ -1,7 +1,7 @@
 #pragma config(Sensor, S1,     TouchSensor,    sensorEV3_Touch)
 #pragma config(Sensor, S2,     UltrasonicSensor, sensorEV3_Ultrasonic)
-#pragma config(Motor,  motorA,          LeftMotor,     tmotorEV3_Large, PIDControl, driveLeft, encoder)
-#pragma config(Motor,  motorB,          RightMotor,    tmotorEV3_Large, PIDControl, driveRight, encoder)
+#pragma config(Motor,  motorA,          RightMotor,    tmotorEV3_Large, PIDControl, driveRight, encoder)
+#pragma config(Motor,  motorB,          LeftMotor,     tmotorEV3_Large, PIDControl, driveLeft, encoder)
 
 /*
  * This Lego Mindstorms EV3 ROBOTC program navigates a maze of 4x6 cells.
@@ -21,12 +21,20 @@ const unsigned int INITIAL_Y = 6;
 const Direction INITIAL_DIRECTION = EAST;
 
 const unsigned int DESTINATION_X = 3;
-const unsigned int DESTINATION_Y = 3;
+const unsigned int DESTINATION_Y = 6;
 
+/* // Constants for geared wheels
 const int ROOM_DISTANCE = 3175;
 const int TURN_DISTANCE = 1275;
 const int US_DISTANCE_TO_WALL = 15;
 const int SPEED = 100;
+*/
+
+// Constants for normal small wheels
+const int ROOM_DISTANCE = 630;
+const int TURN_DISTANCE = 243;
+const int US_DISTANCE_TO_WALL = 15;
+const int SPEED = 40;
 
 // Enums and structs
 
@@ -78,12 +86,12 @@ void moveEncoderAndStop(
 //   Robot r - Robot object which can be moved and turned
 void turnRight(Robot r){
 	moveEncoderAndStop(
-			TURN_DISTANCE + 20, SPEED/2,
-			-(TURN_DISTANCE + 20), SPEED/2
+			-(TURN_DISTANCE + 20), SPEED/2,
+			TURN_DISTANCE + 20, SPEED/2
 	);
 
-	// Correct position
-	moveEncoderAndStop(-65, SPEED/2, -65, SPEED/2);
+	// Correct position for geared wheels
+	//moveEncoderAndStop(-65, SPEED/2, -65, SPEED/2);
 
 	sleep(500);
 	
@@ -97,10 +105,10 @@ void turnRight(Robot r){
 // Parameters:
 //   Robot r - Robot object which can be moved and turned
 void turnLeft(Robot r){
-	moveEncoderAndStop(-TURN_DISTANCE, SPEED/2, TURN_DISTANCE, SPEED/2);
+	moveEncoderAndStop(TURN_DISTANCE, SPEED/2, -TURN_DISTANCE, SPEED/2);
 
-	// Correct position
-	moveEncoderAndStop(-65, SPEED/2, -65, SPEED/2);
+	// Correct position for geared wheels
+	// moveEncoderAndStop(-65, SPEED/2, -65, SPEED/2);
 
 	sleep(500);
 	
@@ -119,12 +127,12 @@ void turnLeft(Robot r){
 bool goForwards(Robot r) {
 	resetMotorEncoder(LeftMotor);
  	resetMotorEncoder(RightMotor);
- 	setMotorTarget(LeftMotor, -ROOM_DISTANCE, SPEED);
-	setMotorTarget(RightMotor, -ROOM_DISTANCE, SPEED);
+ 	setMotorTarget(LeftMotor, ROOM_DISTANCE, SPEED);
+	setMotorTarget(RightMotor, ROOM_DISTANCE, SPEED);
 
 	// Move forwards and stop after one cell
-	while(getMotorEncoder(LeftMotor) > -ROOM_DISTANCE ||
-				getMotorEncoder(RightMotor) > -ROOM_DISTANCE) {
+	while(getMotorEncoder(LeftMotor) < ROOM_DISTANCE ||
+				getMotorEncoder(RightMotor) < ROOM_DISTANCE) {
 		int distanceMoved = getMotorEncoder(LeftMotor);
 
 		if (getTouchValue(TouchSensor)){
@@ -147,20 +155,26 @@ bool goForwards(Robot r) {
 	waitUntilMotorStop(LeftMotor);
 	waitUntilMotorStop(RightMotor);
 
-	// Motor inaccuracy correction
+	// Motor inaccuracy correction for geared wheels
+	/*/
 	resetMotorEncoder(LeftMotor);
 	setMotorTarget(LeftMotor, 50, SPEED/10);
 	waitUntilMotorStop(LeftMotor);
+	//*/
 
 	sleep(100);
 
 	Location newRoom;
-	newRoom.x = xAtDirection(r.location, r.direction);
-	newRoom.y = yAtDirection(r.location, r.direction);
+	setLocation(newRoom,
+			xAtDirection(r.location, r.direction),
+			yAtDirection(r.location, r.direction)
+	);
 
 	Location previousRoomOnStack;
-	previousRoomOnStack.x = peekX(r.previousRooms);
-	previousRoomOnStack.y = peekY(r.previousRooms);
+	setLocation(previousRoomOnStack,
+			peekX(r.previousRooms),
+			peekY(r.previousRooms)
+	);
 
 	// Update move history for the robot
 	// If the current move is repeating the most recent move, then the
@@ -177,6 +191,42 @@ bool goForwards(Robot r) {
 	datalogAddShort(0, peekX(r.previousRooms));
 	datalogAddShort(1, peekY(r.previousRooms));
 	return true;
+}
+
+void reverseAlongPreviousRooms(Robot r) {
+	turnRight(r);
+	turnRight(r);
+	
+	Location nextRoom;
+	setLocation(nextRoom, peekX(r.previousRooms), peekY(r.previousRooms));
+	bool successfulPop = pop(r.previousRooms);
+	
+	while(successfulPop) {
+		
+		Direction d = directionOfNewLocation(r.location, nextRoom);
+		if(r.direction == NORTH) {
+			if(d == WEST) turnLeft(r);
+			if(d == EAST) turnRight(r);
+		}
+		else if(r.direction == EAST) {
+			if(d == NORTH) turnLeft(r);
+			if(d == SOUTH) turnRight(r);
+		}
+		else if(r.direction == SOUTH) {
+			if(d == EAST) turnLeft(r);
+			if(d == WEST) turnRight(r);
+		}
+		else if(r.direction == WEST) {
+			if(d == SOUTH) turnLeft(r);
+			if(d == NORTH) turnRight(r);
+		}
+	
+		moveEncoderAndStop(ROOM_DISTANCE, SPEED, ROOM_DISTANCE, SPEED);
+		
+		setLocation(nextRoom, peekX(r.previousRooms), peekY(r.previousRooms));
+		successfulPop = pop(r.previousRooms);
+	}
+
 }
 
 task main()
@@ -204,13 +254,15 @@ task main()
 	Location destination;
 	setLocation(destination, DESTINATION_X, DESTINATION_Y);
 
-	while(!getButtonPress(buttonAny)) {
+	turnRight(robot);sleep(500);return;
+	turnRight(robot);sleep(500);turnRight(robot);sleep(500);turnRight(robot);sleep(500);
+	
+	while(!equals(destination, robot.location)) {
 
 		// Debugging: Display recorded moveset
-		displayStack(robot.previousRooms); sleep(1000);
+		//displayStack(robot.previousRooms); sleep(1000);
 
 		// Debugging: Display robot location and direction
-		/*
 		displayCenteredTextLine(1, "Current X: %d", robot.location.x);
 		displayCenteredTextLine(2, "Current Y: %d", robot.location.y);
 		displayCenteredTextLine(3, "New X: %d", xAtDirection(robot.location, robot.direction));
@@ -218,7 +270,6 @@ task main()
 		string s;
 		directionToString(robot.direction, s);
 		displayCenteredTextLine(5, "Direction: %s", s);
-		*/
 
 		// No right wall
 		if(getUSDistance(UltrasonicSensor) > US_DISTANCE_TO_WALL) {
@@ -230,6 +281,12 @@ task main()
 			turnLeft(robot);
 		}
 	}
+	
+	playTone(soundFastUpwardTones);
+	sleep(1000);
+	reverseAlongPreviousRooms(robot);
+	playTone(soundFastUpwardTones);
+	sleep(1000);
 
 	datalogClose();
 }
