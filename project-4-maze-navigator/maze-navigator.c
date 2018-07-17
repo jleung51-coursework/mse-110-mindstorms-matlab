@@ -59,6 +59,17 @@ typedef struct {
 
 // Functions
 
+void moveEncoderAndStop(
+		float leftMotorPosition, int leftMotorSpeed,
+		float rightMotorPosition, int rightMotorSpeed) {
+	resetMotorEncoder(LeftMotor);
+	resetMotorEncoder(RightMotor);
+	setMotorTarget(LeftMotor, leftMotorPosition, leftMotorSpeed);
+	setMotorTarget(RightMotor, rightMotorPosition, rightMotorSpeed);
+	waitUntilMotorStop(LeftMotor);
+	waitUntilMotorStop(RightMotor);
+}
+
 // This funtion turns the robot 90 degrees right.
 //
 // The direction of Robot r will be updated accordingly.
@@ -66,19 +77,13 @@ typedef struct {
 // Parameters:
 //   Robot r - Robot object which can be moved and turned
 void turnRight(Robot r){
-	resetMotorEncoder(LeftMotor);
-	resetMotorEncoder(RightMotor);
-	setMotorTarget(LeftMotor, TURN_DISTANCE + 20, SPEED/2);
-	setMotorTarget(RightMotor, -(TURN_DISTANCE + 20), SPEED/2);
-	waitUntilMotorStop(LeftMotor);
-	waitUntilMotorStop(RightMotor);
+	moveEncoderAndStop(
+			TURN_DISTANCE + 20, SPEED/2,
+			-(TURN_DISTANCE + 20), SPEED/2
+	);
 
-	resetMotorEncoder(LeftMotor);
-	resetMotorEncoder(RightMotor);
-	setMotorTarget(LeftMotor, -65, SPEED/2);
-	setMotorTarget(RightMotor, -65, SPEED/2);
-	waitUntilMotorStop(LeftMotor);
-	waitUntilMotorStop(RightMotor);
+	// Correct position
+	moveEncoderAndStop(-65, SPEED/2, -65, SPEED/2);
 
 	sleep(500);
 	
@@ -92,20 +97,10 @@ void turnRight(Robot r){
 // Parameters:
 //   Robot r - Robot object which can be moved and turned
 void turnLeft(Robot r){
-	resetMotorEncoder(LeftMotor);
-	resetMotorEncoder(RightMotor);
+	moveEncoderAndStop(-TURN_DISTANCE, SPEED/2, TURN_DISTANCE, SPEED/2);
 
-	setMotorTarget(LeftMotor, -TURN_DISTANCE, SPEED/2);
-	setMotorTarget(RightMotor, TURN_DISTANCE, SPEED/2);
-	waitUntilMotorStop(LeftMotor);
-	waitUntilMotorStop(RightMotor);
-
-	resetMotorEncoder(LeftMotor);
-	resetMotorEncoder(RightMotor);
-	setMotorTarget(LeftMotor, -65, SPEED/2);
-	setMotorTarget(RightMotor, -65, SPEED/2);
-	waitUntilMotorStop(LeftMotor);
-	waitUntilMotorStop(RightMotor);
+	// Correct position
+	moveEncoderAndStop(-65, SPEED/2, -65, SPEED/2);
 
 	sleep(500);
 	
