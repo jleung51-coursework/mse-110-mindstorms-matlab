@@ -23,13 +23,6 @@ const Direction INITIAL_DIRECTION = EAST;
 const unsigned int DESTINATION_X = 3;
 const unsigned int DESTINATION_Y = 6;
 
-/* // Constants for geared wheels
-const int ROOM_DISTANCE = 3175;
-const int TURN_DISTANCE = 1275;
-const int US_DISTANCE_TO_WALL = 15;
-const int SPEED = 100;
-*/
-
 // Constants for ungeared medium wheels
 const int ROOM_DISTANCE = 488;
 const int TURN_DISTANCE = 194;
@@ -37,29 +30,7 @@ const int US_DISTANCE_TO_WALL = 8;
 const int FORWARD_SPEED = 30;
 const int TURN_SPEED = 40;
 
-// Enums and structs
-
-/*
-enum WallStatus {
-	NONE,
-	NORMAL,
-	EDGE,
-	UNKNOWN
-};
-
-/*
-typedef struct {
-	WallStatus north;
-	WallStatus east;
-	WallStatus south;
-	WallStatus west;
-	bool traversed;
-} Room;
-
-typedef struct {
-	Room rooms[4][6];
-} Maze;
-*/
+// Structs
 
 typedef struct {
 	Direction direction;
@@ -89,7 +60,7 @@ void moveEncoderAndStop(
 void turnRight(Robot r){
 	moveEncoderAndStop(TURN_DISTANCE, TURN_SPEED/2, -TURN_DISTANCE, TURN_SPEED/2);
 	r.direction = getDirectionRight(r.direction);
-	sleep(500);
+	sleep(100);
 }
 
 // This funtion turns the robot 90 degrees left.
@@ -101,7 +72,7 @@ void turnRight(Robot r){
 void turnLeft(Robot r){
 	moveEncoderAndStop(-TURN_DISTANCE, TURN_SPEED/2, TURN_DISTANCE, TURN_SPEED/2);
 	r.direction = getDirectionLeft(r.direction);
-	sleep(500);
+	sleep(100);
 }
 
 // This function moves the robot forwards exactly one cell.
@@ -120,8 +91,8 @@ bool goForwards(Robot r) {
 	setMotorTarget(RightMotor, ROOM_DISTANCE, FORWARD_SPEED);
 
 	// Move forwards and stop after one cell
-	while(getMotorEncoder(LeftMotor) < ROOM_DISTANCE ||
-				getMotorEncoder(RightMotor) < ROOM_DISTANCE) {
+	while(getMotorEncoder(LeftMotor) < ROOM_DISTANCE*0.9 ||
+				getMotorEncoder(RightMotor) < ROOM_DISTANCE*0.9) {
 		int distanceMoved = getMotorEncoder(LeftMotor);
 
 		if (getTouchValue(TouchSensor)){
@@ -129,22 +100,20 @@ bool goForwards(Robot r) {
 			resetMotorEncoder(RightMotor);
 			setMotorSpeed(LeftMotor, 0);
 			setMotorSpeed(RightMotor, 0);
-			sleep(1000);
+			sleep(200);
 
 			setMotorTarget(LeftMotor, -distanceMoved, FORWARD_SPEED);
 			setMotorTarget(RightMotor, -distanceMoved, FORWARD_SPEED);
 			waitUntilMotorStop(LeftMotor);
 			waitUntilMotorStop(RightMotor);
 
-			sleep(500);
+			sleep(100);
 			return false;
 		}
 	}
 
 	waitUntilMotorStop(LeftMotor);
 	waitUntilMotorStop(RightMotor);
-
-	sleep(100);
 
 	// Update move history for the robot
 	// If the current move is reversing the most recent move, then the
@@ -259,11 +228,11 @@ task main()
 	}
 
 	playSound(soundFastUpwardTones);
-	sleep(1000);
+	sleep(300);
 
 	reverseAlongPreviousRooms(robot);
 	playSound(soundFastUpwardTones);
-	sleep(1000);
+	sleep(300);
 
 	playTone(soundFastUpwardTones);
 	sleep(1000);
