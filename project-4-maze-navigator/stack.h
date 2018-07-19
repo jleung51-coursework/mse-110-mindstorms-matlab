@@ -11,12 +11,12 @@ typedef struct Stack;
 typedef struct {
 	unsigned int top_of_stack;
 	unsigned int len;
-	Location* arr;
+	Direction* arr;
 } Stack;
 
 // Functions
 
-void initializeStack(Stack s, Location* arr, unsigned int len) {
+void initializeStack(Stack s, Direction* arr, unsigned int len) {
 	s.top_of_stack = 0;
 	s.len = len;
 	s.arr = arr;
@@ -29,43 +29,33 @@ void initializeStack(Stack s, Location* arr, unsigned int len) {
 void displayStack(Stack s) {
 	for(unsigned int i = 0; i < s.len; ++i) {
 		string str = "";
-		Location extraLocationBecauseRobotcSucks;
-		extraLocationBecauseRobotcSucks.x = s.arr[i].x;
-		extraLocationBecauseRobotcSucks.y = s.arr[i].y;
-		locationToString(extraLocationBecauseRobotcSucks, str);
+		directionToString(s.arr[i], str);
 		displayCenteredTextLine(i, str);
 	}
 }
 
-unsigned int peekX(Stack s) {
+Direction peek(Stack s) {
 	if(s.top_of_stack == 0) {
 		return NONE;
 	}
-	return s.arr[s.top_of_stack-1].x;
+	return s.arr[s.top_of_stack-1];
 }
 
-unsigned int peekY(Stack s) {
-	if(s.top_of_stack == 0) {
-		return NONE;
-	}
-	return s.arr[s.top_of_stack-1].y;
-}
-
-
-bool push(Stack s, Location l) {
+bool push(Stack s, Direction d) {
 	if(s.top_of_stack == s.len) {
 		return false;
 	}
-	s.arr[s.top_of_stack] = l;
+	s.arr[s.top_of_stack] = d;
 	++s.top_of_stack;
 	return true;
 }
 
-bool pop(Stack s) {
+Direction pop(Stack s) {
 	if(s.top_of_stack == 0) {
-		return false;
+		return NONE;
 	}
+	Direction retval = s.arr[s.top_of_stack-1];
 	s.arr[s.top_of_stack-1] = NONE;
 	--s.top_of_stack;
-	return true;
+	return retval;
 }

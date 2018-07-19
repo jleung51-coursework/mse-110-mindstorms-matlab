@@ -31,9 +31,9 @@ const int SPEED = 100;
 */
 
 // Constants for ungeared medium wheels
-const int ROOM_DISTANCE = 465;
+const int ROOM_DISTANCE = 488;
 const int TURN_DISTANCE = 194;
-const int US_DISTANCE_TO_WALL = 5;
+const int US_DISTANCE_TO_WALL = 8;
 const int FORWARD_SPEED = 30;
 const int TURN_SPEED = 40;
 
@@ -64,7 +64,7 @@ typedef struct {
 typedef struct {
 	Direction direction;
 	Location location;
-	Stack previousRooms;
+	Stack previousMoves;
 } Robot;
 
 // Functions
@@ -88,10 +88,6 @@ void moveEncoderAndStop(
 //   Robot r - Robot object which can be moved and turned
 void turnRight(Robot r){
 	moveEncoderAndStop(TURN_DISTANCE, TURN_SPEED/2, -TURN_DISTANCE, TURN_SPEED/2);
-
-	// Correct position for geared wheels
-	//moveEncoderAndStop(-65, SPEED/2, -65, SPEED/2);
-
 	r.direction = getDirectionRight(r.direction);
 	sleep(500);
 }
@@ -104,10 +100,6 @@ void turnRight(Robot r){
 //   Robot r - Robot object which can be moved and turned
 void turnLeft(Robot r){
 	moveEncoderAndStop(-TURN_DISTANCE, TURN_SPEED/2, TURN_DISTANCE, TURN_SPEED/2);
-
-	// Correct position for geared wheels
-	// moveEncoderAndStop(-65, SPEED/2, -65, SPEED/2);
-
 	r.direction = getDirectionLeft(r.direction);
 	sleep(500);
 }
@@ -152,41 +144,29 @@ bool goForwards(Robot r) {
 	waitUntilMotorStop(LeftMotor);
 	waitUntilMotorStop(RightMotor);
 
-	// Motor inaccuracy correction for geared wheels
-	/*/
-	resetMotorEncoder(LeftMotor);
-	setMotorTarget(LeftMotor, 50, SPEED/10);
-	waitUntilMotorStop(LeftMotor);
-	//*/
-
 	sleep(100);
 
-	Location newRoom;
-	setLocation(newRoom,
+	// Update move history for the robot
+	// If the current move is reversing the most recent move, then the
+	// most recent move is removed
+	if(r.direction == getOppositeDirection(peek(r.previousMoves))) {
+		pop(r.previousMoves);
+	}
+	else {
+		push(r.previousMoves, r.direction);
+	}
+
+	setLocation(
+			r.location,
 			xAtDirection(r.location, r.direction),
 			yAtDirection(r.location, r.direction)
 	);
 
-	Location previousRoomOnStack;
-	setLocation(previousRoomOnStack,
-			peekX(r.previousRooms),
-			peekY(r.previousRooms)
-	);
-
-	// Update move history for the robot
-	// If the current move is repeating the most recent move, then the
-	// most recent move is removed
-	if(equals(previousRoomOnStack, newRoom)) {
-		pop(r.previousRooms);
-	}
-	else {
-		push(r.previousRooms, r.location);
-	}
-	r.location = newRoom;
-
 	// Move history
-	datalogAddShort(0, peekX(r.previousRooms));
-	datalogAddShort(1, peekY(r.previousRooms));
+	string s;
+	directionToString(peek(r.previousMoves), s);
+	stringDelete(s, 1, 10);
+	datalogAddChar(0, (char)atoi(s));
 	return true;
 }
 
@@ -194,35 +174,35 @@ void reverseAlongPreviousRooms(Robot r) {
 	turnRight(r);
 	turnRight(r);
 
-	Location nextRoom;
-	setLocation(nextRoom, peekX(r.previousRooms), peekY(r.previousRooms));
-	bool successfulPop = pop(r.previousRooms);
+	Direction nextDirection = getOppositeDirection(pop(r.previousMoves));
 
-	while(successfulPop) {
+	while(nextDirection != NONE) {
 
-		Direction d = directionOfNewLocation(r.location, nextRoom);
 		if(r.direction == NORTH) {
-			if(d == WEST) turnLeft(r);
-			if(d == EAST) turnRight(r);
+			if(nextDirection == WEST) turnLeft(r);
+			if(nextDirection == EAST) turnRight(r);
 		}
 		else if(r.direction == EAST) {
-			if(d == NORTH) turnLeft(r);
-			if(d == SOUTH) turnRight(r);
+			if(nextDirection == NORTH) turnLeft(r);
+			if(nextDirection == SOUTH) turnRight(r);
 		}
 		else if(r.direction == SOUTH) {
-			if(d == EAST) turnLeft(r);
-			if(d == WEST) turnRight(r);
+			if(nextDirection == EAST) turnLeft(r);
+			if(nextDirection == WEST) turnRight(r);
 		}
 		else if(r.direction == WEST) {
-			if(d == SOUTH) turnLeft(r);
-			if(d == NORTH) turnRight(r);
+			if(nextDirection == SOUTH) turnLeft(r);
+			if(nextDirection == NORTH) turnRight(r);
 		}
 
 		moveEncoderAndStop(ROOM_DISTANCE, FORWARD_SPEED, ROOM_DISTANCE, FORWARD_SPEED);
-		r.location = nextRoom;
+		setLocation(
+				r.location,
+				xAtDirection(r.location, r.direction),
+				yAtDirection(r.location, r.direction)
+		);
 
-		setLocation(nextRoom, peekX(r.previousRooms), peekY(r.previousRooms));
-		successfulPop = pop(r.previousRooms);
+		nextDirection = getOppositeDirection(pop(r.previousMoves));
 	}
 
 }
@@ -243,8 +223,8 @@ task main()
 	Robot robot;
 
 	const unsigned int len = 50;
-	Location arr[len];
-	initializeStack(robot.previousRooms, arr, len);
+	Direction arr[len];
+	initializeStack(robot.previousMoves, arr, len);
 
 	setLocation(robot.location, INITIAL_X, INITIAL_Y);
 	robot.direction = INITIAL_DIRECTION;
@@ -252,18 +232,10 @@ task main()
 	Location destination;
 	setLocation(destination, DESTINATION_X, DESTINATION_Y);
 
-	Location destination;
-	setLocation(destination, DESTINATION_X, DESTINATION_Y);
-
-	//turnRight(robot);sleep(500);return;
-	//turnRight(robot);sleep(500);turnRight(robot);sleep(500);turnRight(robot);sleep(500);turnRight(robot);sleep(500);return;
-	//turnLeft(robot);sleep(500);turnLeft(robot);sleep(500);turnLeft(robot);sleep(500);turnLeft(robot);sleep(500);return;
-	//goForwards(robot);sleep(500);return;
-
 	while(!equals(destination, robot.location)) {
 
 		// Debugging: Display recorded moveset
-		displayStack(robot.previousRooms);
+		displayStack(robot.previousMoves);
 
 		// Debugging: Display robot location and direction
 		/*displayCenteredTextLine(1, "Current X: %d", robot.location.x);
@@ -286,10 +258,11 @@ task main()
 		}
 	}
 
-	playTone(soundFastUpwardTones);
+	playSound(soundFastUpwardTones);
 	sleep(1000);
+
 	reverseAlongPreviousRooms(robot);
-	playTone(soundFastUpwardTones);
+	playSound(soundFastUpwardTones);
 	sleep(1000);
 
 	playTone(soundFastUpwardTones);

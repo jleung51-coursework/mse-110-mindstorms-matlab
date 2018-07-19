@@ -32,6 +32,27 @@ void directionToString(Direction l, string& s) {
 	}
 }
 
+Direction getOppositeDirection(Direction d) {
+	if(d == NORTH) return SOUTH;
+	else if(d == SOUTH) return NORTH;
+	else if(d == EAST) return WEST;
+	else if(d == WEST) return EAST;
+	else return NONE;
+
+	switch(d) {
+		case NORTH:
+			return SOUTH;
+		case EAST:
+			return WEST;
+		case SOUTH:
+			return NORTH;
+		case WEST:
+			return EAST;
+		default:
+			return NONE;
+	}
+}
+
 Direction getDirectionLeft(Direction d) {
 	switch(d) {
 		case NORTH:
