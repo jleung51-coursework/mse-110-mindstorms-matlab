@@ -30,14 +30,16 @@ const int US_DISTANCE_TO_WALL = 15;
 const int SPEED = 100;
 */
 
-// Constants for normal small wheels
-const int ROOM_DISTANCE = 630;
-const int TURN_DISTANCE = 243;
-const int US_DISTANCE_TO_WALL = 15;
-const int SPEED = 40;
+// Constants for ungeared medium wheels
+const int ROOM_DISTANCE = 465;
+const int TURN_DISTANCE = 194;
+const int US_DISTANCE_TO_WALL = 5;
+const int FORWARD_SPEED = 30;
+const int TURN_SPEED = 40;
 
 // Enums and structs
 
+/*
 enum WallStatus {
 	NONE,
 	NORMAL,
@@ -85,17 +87,13 @@ void moveEncoderAndStop(
 // Parameters:
 //   Robot r - Robot object which can be moved and turned
 void turnRight(Robot r){
-	moveEncoderAndStop(
-			-(TURN_DISTANCE + 20), SPEED/2,
-			TURN_DISTANCE + 20, SPEED/2
-	);
+	moveEncoderAndStop(TURN_DISTANCE, TURN_SPEED/2, -TURN_DISTANCE, TURN_SPEED/2);
 
 	// Correct position for geared wheels
 	//moveEncoderAndStop(-65, SPEED/2, -65, SPEED/2);
 
-	sleep(500);
-	
 	r.direction = getDirectionRight(r.direction);
+	sleep(500);
 }
 
 // This funtion turns the robot 90 degrees left.
@@ -105,14 +103,13 @@ void turnRight(Robot r){
 // Parameters:
 //   Robot r - Robot object which can be moved and turned
 void turnLeft(Robot r){
-	moveEncoderAndStop(TURN_DISTANCE, SPEED/2, -TURN_DISTANCE, SPEED/2);
+	moveEncoderAndStop(-TURN_DISTANCE, TURN_SPEED/2, TURN_DISTANCE, TURN_SPEED/2);
 
 	// Correct position for geared wheels
 	// moveEncoderAndStop(-65, SPEED/2, -65, SPEED/2);
 
-	sleep(500);
-	
 	r.direction = getDirectionLeft(r.direction);
+	sleep(500);
 }
 
 // This function moves the robot forwards exactly one cell.
@@ -127,8 +124,8 @@ void turnLeft(Robot r){
 bool goForwards(Robot r) {
 	resetMotorEncoder(LeftMotor);
  	resetMotorEncoder(RightMotor);
- 	setMotorTarget(LeftMotor, ROOM_DISTANCE, SPEED);
-	setMotorTarget(RightMotor, ROOM_DISTANCE, SPEED);
+ 	setMotorTarget(LeftMotor, ROOM_DISTANCE, FORWARD_SPEED);
+	setMotorTarget(RightMotor, ROOM_DISTANCE, FORWARD_SPEED);
 
 	// Move forwards and stop after one cell
 	while(getMotorEncoder(LeftMotor) < ROOM_DISTANCE ||
@@ -142,8 +139,8 @@ bool goForwards(Robot r) {
 			setMotorSpeed(RightMotor, 0);
 			sleep(1000);
 
-			setMotorTarget(LeftMotor, -distanceMoved, SPEED);
-			setMotorTarget(RightMotor, -distanceMoved, SPEED);
+			setMotorTarget(LeftMotor, -distanceMoved, FORWARD_SPEED);
+			setMotorTarget(RightMotor, -distanceMoved, FORWARD_SPEED);
 			waitUntilMotorStop(LeftMotor);
 			waitUntilMotorStop(RightMotor);
 
@@ -196,13 +193,13 @@ bool goForwards(Robot r) {
 void reverseAlongPreviousRooms(Robot r) {
 	turnRight(r);
 	turnRight(r);
-	
+
 	Location nextRoom;
 	setLocation(nextRoom, peekX(r.previousRooms), peekY(r.previousRooms));
 	bool successfulPop = pop(r.previousRooms);
-	
+
 	while(successfulPop) {
-		
+
 		Direction d = directionOfNewLocation(r.location, nextRoom);
 		if(r.direction == NORTH) {
 			if(d == WEST) turnLeft(r);
@@ -220,9 +217,10 @@ void reverseAlongPreviousRooms(Robot r) {
 			if(d == SOUTH) turnLeft(r);
 			if(d == NORTH) turnRight(r);
 		}
-	
-		moveEncoderAndStop(ROOM_DISTANCE, SPEED, ROOM_DISTANCE, SPEED);
-		
+
+		moveEncoderAndStop(ROOM_DISTANCE, FORWARD_SPEED, ROOM_DISTANCE, FORWARD_SPEED);
+		r.location = nextRoom;
+
 		setLocation(nextRoom, peekX(r.previousRooms), peekY(r.previousRooms));
 		successfulPop = pop(r.previousRooms);
 	}
@@ -250,26 +248,32 @@ task main()
 
 	setLocation(robot.location, INITIAL_X, INITIAL_Y);
 	robot.direction = INITIAL_DIRECTION;
-	
+
 	Location destination;
 	setLocation(destination, DESTINATION_X, DESTINATION_Y);
 
-	turnRight(robot);sleep(500);return;
-	turnRight(robot);sleep(500);turnRight(robot);sleep(500);turnRight(robot);sleep(500);
-	
+	Location destination;
+	setLocation(destination, DESTINATION_X, DESTINATION_Y);
+
+	//turnRight(robot);sleep(500);return;
+	//turnRight(robot);sleep(500);turnRight(robot);sleep(500);turnRight(robot);sleep(500);turnRight(robot);sleep(500);return;
+	//turnLeft(robot);sleep(500);turnLeft(robot);sleep(500);turnLeft(robot);sleep(500);turnLeft(robot);sleep(500);return;
+	//goForwards(robot);sleep(500);return;
+
 	while(!equals(destination, robot.location)) {
 
 		// Debugging: Display recorded moveset
-		//displayStack(robot.previousRooms); sleep(1000);
+		displayStack(robot.previousRooms);
 
 		// Debugging: Display robot location and direction
-		displayCenteredTextLine(1, "Current X: %d", robot.location.x);
+		/*displayCenteredTextLine(1, "Current X: %d", robot.location.x);
 		displayCenteredTextLine(2, "Current Y: %d", robot.location.y);
 		displayCenteredTextLine(3, "New X: %d", xAtDirection(robot.location, robot.direction));
 		displayCenteredTextLine(4, "New Y: %d", yAtDirection(robot.location, robot.direction));
 		string s;
 		directionToString(robot.direction, s);
 		displayCenteredTextLine(5, "Direction: %s", s);
+		*/
 
 		// No right wall
 		if(getUSDistance(UltrasonicSensor) > US_DISTANCE_TO_WALL) {
@@ -281,7 +285,13 @@ task main()
 			turnLeft(robot);
 		}
 	}
-	
+
+	playTone(soundFastUpwardTones);
+	sleep(1000);
+	reverseAlongPreviousRooms(robot);
+	playTone(soundFastUpwardTones);
+	sleep(1000);
+
 	playTone(soundFastUpwardTones);
 	sleep(1000);
 	reverseAlongPreviousRooms(robot);
