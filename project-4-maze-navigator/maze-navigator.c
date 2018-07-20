@@ -40,6 +40,14 @@ typedef struct {
 
 // Functions
 
+// This function moves the motors to given encoder positions at given speeds
+// and returns only when the motion is complete.
+//
+// Parameters:
+//   float leftMotorPosition - Encoder position to move the left motor to.
+//   int leftMotorSpeed- Speed at which to move the left motor.
+//   float rightMotorPosition - Encoder position to move the right motor to.
+//   float rightMotorPosition - Speed at which to move the right motor.
 void moveEncoderAndStop(
 		float leftMotorPosition, int leftMotorSpeed,
 		float rightMotorPosition, int rightMotorSpeed) {
@@ -51,25 +59,25 @@ void moveEncoderAndStop(
 	waitUntilMotorStop(RightMotor);
 }
 
-// This funtion turns the robot 90 degrees right.
+// This function turns the robot 90 degrees right.
 //
 // The direction of Robot r will be updated accordingly.
 //
 // Parameters:
 //   Robot r - Robot object which can be moved and turned
-void turnRight(Robot r){
+void turnRight(Robot r) {
 	moveEncoderAndStop(TURN_DISTANCE, TURN_SPEED/2, -TURN_DISTANCE, TURN_SPEED/2);
 	r.direction = getDirectionRight(r.direction);
 	sleep(100);
 }
 
-// This funtion turns the robot 90 degrees left.
+// This function turns the robot 90 degrees left.
 //
 // The direction of Robot r will be updated accordingly.
 //
 // Parameters:
 //   Robot r - Robot object which can be moved and turned
-void turnLeft(Robot r){
+void turnLeft(Robot r) {
 	moveEncoderAndStop(-TURN_DISTANCE, TURN_SPEED/2, TURN_DISTANCE, TURN_SPEED/2);
 	r.direction = getDirectionLeft(r.direction);
 	sleep(100);
