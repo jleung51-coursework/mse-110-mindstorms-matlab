@@ -11,6 +11,20 @@
  *
  */
 
+#define NOTROBOTC  // Comment this out if running with the ROBOTC compiler
+
+#include "../robotc_dummy.h"
+
+// Replace ROBOTC-specific variables defined at top of file
+#ifdef NOTROBOTC
+#include <stdlib.h>
+
+const int TouchSensor = 0;
+const int UltrasonicSensor = 0;
+const int RightMotor = 0;
+const int LeftMotor = 0;
+#endif
+
 #include "map-essentials.h"
 #include "stack.h"
 
@@ -37,6 +51,16 @@ typedef struct {
 	Location location;
 	Stack previousMoves;
 } Robot;
+
+// Function prototypes
+
+void moveEncoderAndStop(
+		float leftMotorPosition, int leftMotorSpeed,
+		float rightMotorPosition, int rightMotorSpeed);
+void turnRight(Robot r);
+void turnLeft(Robot r);
+bool goForwards(Robot r);
+void reverseAlongPreviousRooms(Robot r);
 
 // Functions
 
@@ -134,14 +158,14 @@ bool goForwards(Robot r) {
 	}
 
 	setLocation(
-			r.location,
+			&r.location,
 			xAtDirection(r.location, r.direction),
 			yAtDirection(r.location, r.direction)
 	);
 
 	// Move history
 	string s;
-	directionToString(peek(r.previousMoves), s);
+	directionToString(peek(r.previousMoves), &s);
 	stringDelete(s, 1, 10);
 	datalogAddChar(0, (char)atoi(s));
 	return true;
@@ -174,7 +198,7 @@ void reverseAlongPreviousRooms(Robot r) {
 
 		moveEncoderAndStop(ROOM_DISTANCE, FORWARD_SPEED, ROOM_DISTANCE, FORWARD_SPEED);
 		setLocation(
-				r.location,
+				&r.location,
 				xAtDirection(r.location, r.direction),
 				yAtDirection(r.location, r.direction)
 		);
@@ -203,11 +227,11 @@ task main()
 	Direction arr[len];
 	initializeStack(robot.previousMoves, arr, len);
 
-	setLocation(robot.location, INITIAL_X, INITIAL_Y);
+	setLocation(&robot.location, INITIAL_X, INITIAL_Y);
 	robot.direction = INITIAL_DIRECTION;
 
 	Location destination;
-	setLocation(destination, DESTINATION_X, DESTINATION_Y);
+	setLocation(&destination, DESTINATION_X, DESTINATION_Y);
 
 	while(!equals(destination, robot.location)) {
 
@@ -241,12 +265,6 @@ task main()
 	reverseAlongPreviousRooms(robot);
 	playSound(soundFastUpwardTones);
 	sleep(300);
-
-	playTone(soundFastUpwardTones);
-	sleep(1000);
-	reverseAlongPreviousRooms(robot);
-	playTone(soundFastUpwardTones);
-	sleep(1000);
 
 	datalogClose();
 }

@@ -1,34 +1,54 @@
 #pragma once
 
-enum Direction {
+#ifdef NOTROBOTC
+typedef char* string;
+#endif
+
+typedef enum Direction {
 	NONE,
 	NORTH,
 	EAST,
 	SOUTH,
 	WEST
-};
+} Direction;
 
 typedef struct {
 	unsigned int x;
 	unsigned int y;
 } Location;
 
-void directionToString(Direction l, string& s) {
+// Function prototypes
+
+void directionToString(Direction l, string* s);
+Direction getOppositeDirection(Direction d);
+Direction getDirectionLeft(Direction d);
+Direction getDirectionRight(Direction d);
+
+void locationToString(Location l, string s);
+void setLocation(Location* l, unsigned int x, unsigned int y);
+bool equals(Location l1, Location l2);
+unsigned int xAtDirection(Location l, Direction d);
+unsigned int yAtDirection(Location l, Direction d);
+Direction directionOfNewLocation(Location old, Location new);
+
+// Functions
+
+void directionToString(Direction l, string* s) {
 	switch(l) {
 		case NORTH:
-			s = "NORTH";
+			*s = "NORTH";
 			break;
 		case WEST:
-			s = "WEST";
+			*s = "WEST";
 			break;
 		case SOUTH:
-			s = "SOUTH";
+			*s = "SOUTH";
 			break;
 		case EAST:
-			s = "EAST";
+			*s = "EAST";
 			break;
 		default:
-		  s = "";
+		  *s = "";
 	}
 }
 
@@ -83,7 +103,7 @@ Direction getDirectionRight(Direction d) {
 	}
 }
 
-void locationToString(Location l, string& s) {
+void locationToString(Location l, string s) {
 	string x = "";
 	sprintf(x, "%d", l.x);
 
@@ -93,9 +113,9 @@ void locationToString(Location l, string& s) {
 	sprintf(s, "(%d, %d)", l.x, l.y);
 }
 
-void setLocation(Location& l, unsigned int x, unsigned int y) {
-	l.x = x;
-	l.y = y;
+void setLocation(Location* l, unsigned int x, unsigned int y) {
+	l->x = x;
+	l->y = y;
 }
 
 bool equals(Location l1, Location l2) {

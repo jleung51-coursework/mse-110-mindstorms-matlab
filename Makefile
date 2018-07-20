@@ -28,6 +28,7 @@ help:
 	@echo "  To compile Project 1 (line follower PID), run: make follower-pid"
 	@echo "  To compile Project 2 (combat), run: make combat"
 	@echo "  To compile Project 3 (barcode scanner - ROBOTC only), run: make scanner"
+	@echo "  To compile Project 4 (maze navigator), run: make maze"
 	@echo "  To remove compiled output files, run: make clean"
 
 # Executed whenever an object file is out of date
@@ -63,6 +64,11 @@ combat: project-2-combat/combat.o
 # $ make scanner
 scanner: project-3-barcode-scanner/scanner.o
 	$(GCC) scanner.o -o $(OUTPUT)
+	@echo "To execute the program, run: ./$(OUTPUT)"
+
+# $ make maze
+maze: project-4-maze-navigator/maze-navigator.o project-4-maze-navigator/stack.h project-4-maze-navigator/map-essentials.h
+	$(GCC) maze-navigator.o -o $(OUTPUT)
 	@echo "To execute the program, run: ./$(OUTPUT)"
 
 # $ make clean

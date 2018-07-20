@@ -1,4 +1,4 @@
-/**
+ /**
  * This C header file provides dummy definitions for types and functions
  * specific to the Lego Mindstorms EV3 ROBOTC version of C.
  * Including this file allows a file written in ROBOTC to be successfully
@@ -20,6 +20,17 @@ typedef enum {
   false,
   true
 } bool;
+
+typedef enum {
+  soundBlip,
+  soundBeepBeep,
+  soundDownwardTones,
+  soundLowBuzz,
+  soundFastUpwardTones,
+  soundShortBlip,
+  soundException,
+  soundLowBuzzShort
+} TSounds;
 
 // Display
 void displayTextLine(const int nLineNumber, char* sFormatString, ...);
@@ -80,6 +91,11 @@ bool datalogAddShort(long nIndex, short data) {
   return true;
 }
 
+bool datalogAddChar(long nIndex, char data);
+bool datalogAddChar(long nIndex, char data) {
+  return true;
+}
+
 void datalogFlush();
 void datalogFlush(){}
 
@@ -114,12 +130,22 @@ int getMotorSpeed(int nMotorIndex) {
   return 0;
 }
 
+int getTouchValue(int nMotorIndex);
+int getTouchValue(int nMotorIndex) {
+  return 1;
+}
+
 // Actuators
 void setMotorSpeed(int motor, int speed);
 void setMotorSpeed(int motor, int speed) {}
 
 void resetMotorEncoder(int nMotorIndex);
 void resetMotorEncoder(int nMotorIndex) {}
+
+int getMotorEncoder(int nMotorIndex);
+int getMotorEncoder(int nMotorIndex) {
+  return 1;
+}
 
 void setMotorTarget(int nMotorIndex, float nPosition, int nspeed);
 void setMotorTarget(int nMotorIndex, float nPosition, int nspeed) {}
@@ -130,6 +156,9 @@ void waitUntilMotorStop(int nMotorIndex){}
 void playTone(int frequency, int durationIn10MsecTicks);
 void playTone(int frequency, int durationIn10MsecTicks) {}
 
+void playSound(TSounds sound);
+void playSound(TSounds sound){}
+
 // Other functions
 void sleep();
 void sleep(){}
@@ -138,5 +167,8 @@ int random();
 int random() {
   return 1;
 }
+
+void stringDelete(char* str, const int nIndex, const int nSize);
+void stringDelete(char* str, const int nIndex, const int nSize){}
 
 #endif

@@ -2,10 +2,6 @@
 
 #include "map-essentials.h"
 
-// Prototypes
-
-typedef struct Stack;
-
 // Structs
 
 typedef struct {
@@ -13,6 +9,14 @@ typedef struct {
 	unsigned int len;
 	Direction* arr;
 } Stack;
+
+// Function prototypes
+
+void initializeStack(Stack s, Direction* arr, unsigned int len);
+void displayStack(Stack s);
+Direction peek(Stack s);
+bool push(Stack s, Direction d);
+Direction pop(Stack s);
 
 // Functions
 
@@ -29,7 +33,7 @@ void initializeStack(Stack s, Direction* arr, unsigned int len) {
 void displayStack(Stack s) {
 	for(unsigned int i = 0; i < s.len; ++i) {
 		string str = "";
-		directionToString(s.arr[i], str);
+		directionToString(s.arr[i], &str);
 		displayCenteredTextLine(i, str);
 	}
 }
