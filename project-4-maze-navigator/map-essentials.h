@@ -24,12 +24,10 @@ Direction getOppositeDirection(Direction d);
 Direction getDirectionLeft(Direction d);
 Direction getDirectionRight(Direction d);
 
-void locationToString(Location l, string s);
 void setLocation(Location* l, unsigned int x, unsigned int y);
 bool equals(Location l1, Location l2);
 unsigned int xAtDirection(Location l, Direction d);
 unsigned int yAtDirection(Location l, Direction d);
-Direction directionOfNewLocation(Location old, Location new);
 
 // Functions
 
@@ -103,16 +101,6 @@ Direction getDirectionRight(Direction d) {
 	}
 }
 
-void locationToString(Location l, string s) {
-	string x = "";
-	sprintf(x, "%d", l.x);
-
-	string y = "";
-	sprintf(y, "%d", l.y);
-
-	sprintf(s, "(%d, %d)", l.x, l.y);
-}
-
 void setLocation(Location* l, unsigned int x, unsigned int y) {
 	l->x = x;
 	l->y = y;
@@ -151,23 +139,5 @@ unsigned int yAtDirection(Location l, Direction d) {
 			return l.y - 1;
 		default:
 			return l.y;
-	}
-}
-
-Direction directionOfNewLocation(Location old, Location new) {
-	if(new.x < old.x) {
-		return WEST;
-	}
-	else if(new.x > old.x) {
-		return EAST;
-	}
-	else if(new.y < old.y) {
-		return NORTH;
-	}
-	else if(new.y > old.y) {
-		return SOUTH;
-	}
-	else {
-		return NONE;
 	}
 }
