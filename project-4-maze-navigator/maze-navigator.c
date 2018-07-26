@@ -241,16 +241,16 @@ void reverseAlongPreviousRooms(Robot r) {
 		while(getOppositeDirection(peek(r.previousMoves)) == nextDirection) {
 			++consecutiveRooms;
 			pop(r.previousMoves);
+			setLocation(
+					&r.location,
+					xAtDirection(r.location, r.direction),
+					yAtDirection(r.location, r.direction)
+			);
 		}
 
 		moveEncoderAndStop(
 				ROOM_DISTANCE * consecutiveRooms, FORWARD_SPEED,
 				ROOM_DISTANCE * consecutiveRooms, FORWARD_SPEED
-		);
-		setLocation(
-				&r.location,
-				xAtDirection(r.location, r.direction),
-				yAtDirection(r.location, r.direction)
 		);
 
 		nextDirection = getOppositeDirection(pop(r.previousMoves));
