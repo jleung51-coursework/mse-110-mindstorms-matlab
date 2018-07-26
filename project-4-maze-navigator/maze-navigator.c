@@ -39,8 +39,8 @@ const unsigned int DESTINATION_Y = 0;
 
 // Constants for ungeared medium wheels
 const int ROOM_DISTANCE = 490;
-const int TURN_DISTANCE_RIGHT = 180;
-const int TURN_DISTANCE_LEFT = 182;
+const int TURN_DISTANCE_RIGHT = 182;
+const int TURN_DISTANCE_LEFT = 180;
 const int US_DISTANCE_TO_WALL = 11;
 const int FORWARD_SPEED = 30;
 const int TURN_SPEED = 40;
@@ -160,17 +160,22 @@ bool goForwards(Robot r) {
 	// Move forwards and stop after one cell
 	while(getMotorEncoder(LeftMotor) < ROOM_DISTANCE*0.9 ||
 				getMotorEncoder(RightMotor) < ROOM_DISTANCE*0.9) {
-		int distanceMoved = getMotorEncoder(LeftMotor);
 
 		if (getTouchValue(TouchSensor)){
+
 			resetMotorEncoder(LeftMotor);
 			resetMotorEncoder(RightMotor);
 			setMotorSpeed(LeftMotor, 0);
 			setMotorSpeed(RightMotor, 0);
-			sleep(200);
+			waitUntilMotorStop(LeftMotor);
+			waitUntilMotorStop(RightMotor);
 
-			setMotorTarget(LeftMotor, -distanceMoved, FORWARD_SPEED);
-			setMotorTarget(RightMotor, -distanceMoved, FORWARD_SPEED);
+			moveEncoderAndStop(120, 30, 120, 30);
+			resetMotorEncoder(LeftMotor);
+			resetMotorEncoder(RightMotor);
+			sleep(200);
+			setMotorTarget(LeftMotor, -110, FORWARD_SPEED);
+			setMotorTarget(RightMotor, -110, FORWARD_SPEED);
 			waitUntilMotorStop(LeftMotor);
 			waitUntilMotorStop(RightMotor);
 
