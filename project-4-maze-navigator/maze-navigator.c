@@ -70,6 +70,7 @@ void moveEncoderAndStop(
 		float rightMotorPosition, int rightMotorSpeed);
 void turnRight(Robot r);
 void turnLeft(Robot r);
+void turn180(Robot r);
 bool goForwards(Robot r);
 void reverseAlongPreviousRooms(Robot r);
 
@@ -317,7 +318,7 @@ task main()
 		displayCenteredTextLine(3, "New X: %d", xAtDirection(robot.location, robot.direction));
 		displayCenteredTextLine(4, "New Y: %d", yAtDirection(robot.location, robot.direction));
 		string s;
-		directionToString(robot.direction, s);
+		directionToString(robot.direction, &s);
 		displayCenteredTextLine(5, "Direction: %s", s);
 
 		// No right wall
