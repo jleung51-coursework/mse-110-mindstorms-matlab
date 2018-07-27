@@ -223,6 +223,11 @@ bool goForwards(Robot r) {
 	return true;
 }
 
+// This function reverses the robot along the stored history of previous moves.
+// The robot will first turn 180 degrees to face the other direction.
+//
+// Parameters:
+//   Robot r -- Robot object which can be moved and turned
 void reverseAlongPreviousRooms(Robot r) {
 	turn180(r);  // Face the other way
 
