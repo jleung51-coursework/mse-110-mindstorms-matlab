@@ -32,13 +32,13 @@ const int LeftMotor = 0;
 // Constants
 
 // Set original x and y coordinates, as well as direction of robot
-const unsigned int INITIAL_X = 0;
-const unsigned int INITIAL_Y = 5;
-const Direction INITIAL_DIRECTION = EAST;
+const unsigned int INITIAL_X = 3;
+const unsigned int INITIAL_Y = 0;
+const Direction INITIAL_DIRECTION = WEST;
 
 // Set destination x and y coordinates
 const unsigned int DESTINATION_X = 3;
-const unsigned int DESTINATION_Y = 0;
+const unsigned int DESTINATION_Y = 3;
 
 // Constants for ungeared medium wheels
 const int ROOM_DISTANCE = 490;  // Distance of one cell
