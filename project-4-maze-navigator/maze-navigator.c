@@ -103,7 +103,7 @@ void moveEncoderAndStop(
 //   Robot r - Robot object which can be moved and turned
 void turnRight(Robot r) {
 	unsigned int turnDistance = TURN_DISTANCE_RIGHT;
-	if(r.previousTurn != NONE && r.previousTurn != RIGHT) {  // If the robot turned left and is now turning right
+	if(r.previousTurn == LEFT) {  // If the robot turned left and is now turning right
 		turnDistance += 2;  // Turn a little more to correct for encoder issues
 	}
 
@@ -121,7 +121,7 @@ void turnRight(Robot r) {
 //   Robot r - Robot object which can be moved and turned
 void turnLeft(Robot r) {
 	unsigned int turnDistance = TURN_DISTANCE_LEFT;
-	if(r.previousTurn != NONE && r.previousTurn != LEFT) {  // If the robot turned right and is now turning left
+	if(r.previousTurn == RIGHT) {  // If the robot turned right and is now turning left
 		turnDistance += 2;  // Turn a little more to correct for encoder issues
 	}
 
