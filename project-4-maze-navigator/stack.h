@@ -26,7 +26,7 @@ void initializeStack(Stack s, Direction* arr, unsigned int len) {
 	s.arr = arr;
 
 	for(unsigned int i = 0; i < s.len; ++i) {
-		s.arr[i] = NONE;
+		s.arr[i] = NONE_DIRECTION;
 	}
 }
 
@@ -40,7 +40,7 @@ void displayStack(Stack s) {
 
 Direction peek(Stack s) {
 	if(s.top_of_stack == 0) {
-		return NONE;
+		return NONE_DIRECTION;
 	}
 	return s.arr[s.top_of_stack-1];
 }
@@ -56,10 +56,10 @@ bool push(Stack s, Direction d) {
 
 Direction pop(Stack s) {
 	if(s.top_of_stack == 0) {
-		return NONE;
+		return NONE_DIRECTION;
 	}
 	Direction retval = s.arr[s.top_of_stack-1];
-	s.arr[s.top_of_stack-1] = NONE;
+	s.arr[s.top_of_stack-1] = NONE_DIRECTION;
 	--s.top_of_stack;
 	return retval;
 }

@@ -5,7 +5,7 @@ typedef char* string;
 #endif
 
 typedef enum Direction {
-	NONE,
+	NONE_DIRECTION,
 	NORTH,
 	EAST,
 	SOUTH,
@@ -55,7 +55,7 @@ Direction getOppositeDirection(Direction d) {
 	else if(d == SOUTH) return NORTH;
 	else if(d == EAST) return WEST;
 	else if(d == WEST) return EAST;
-	else return NONE;
+	else return NONE_DIRECTION;
 
 	switch(d) {
 		case NORTH:
@@ -67,7 +67,7 @@ Direction getOppositeDirection(Direction d) {
 		case WEST:
 			return EAST;
 		default:
-			return NONE;
+			return NONE_DIRECTION;
 	}
 }
 
@@ -82,7 +82,7 @@ Direction getDirectionLeft(Direction d) {
 		case EAST:
 			return NORTH;
 		default:
-			return NONE;
+			return NONE_DIRECTION;
 	}
 }
 
@@ -97,7 +97,7 @@ Direction getDirectionRight(Direction d) {
 		case WEST:
 			return NORTH;
 		default:
-			return NONE;
+			return NONE_DIRECTION;
 	}
 }
 

@@ -51,7 +51,7 @@ const int TURN_SPEED = 40; // Speed for which the robot should turn right or lef
 // Structs
 
 typedef enum TurnDirection {  // Holds a single history of a turn
-	NONE,
+	NONE_TURN_DIRECTION,
 	LEFT,
 	RIGHT
 } TurnDirection;
@@ -214,7 +214,7 @@ bool goForwards(Robot r) {
 	);
 
 	// Change previous turn history to nothing
-	r.previousTurn = NONE;
+	r.previousTurn = NONE_TURN_DIRECTION;
 
 	// Store move history in datalog for debugging
 	string s;
@@ -234,7 +234,7 @@ void reverseAlongPreviousRooms(Robot r) {
 
 	Direction nextDirection = getOppositeDirection(pop(r.previousMoves));
 
-	while(nextDirection != NONE) {  // Go through the entire stack of moves
+	while(nextDirection != NONE_DIRECTION) {  // Go through the entire stack of moves
 
 		if(r.direction == NORTH) {  // Correct for new direction
 			if(nextDirection == WEST) turnLeft(r);
@@ -302,7 +302,7 @@ task main()
 
 	setLocation(&robot.location, INITIAL_X, INITIAL_Y);  // Initialize location
 	robot.direction = INITIAL_DIRECTION;  // Initialize direction
-	robot.previousTurn = NONE;
+	robot.previousTurn = NONE_DIRECTION;
 
 	Location destination;
 	setLocation(&destination, DESTINATION_X, DESTINATION_Y);  // Create destination location with x and y coordinates set above
