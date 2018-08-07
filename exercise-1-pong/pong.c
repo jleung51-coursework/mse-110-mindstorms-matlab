@@ -3,9 +3,9 @@
 *
 */
 
-#define NOTROBOTC  // Comment this out if running with the ROBOTC compiler
+// #define NOTROBOTC  // Comment this out if running with the ROBOTC compiler
 
-#include "../robotc_dummy.h"
+// #include "../robotc_dummy.h"
 
 // Function definitions
 bool paddleBounce(int ballXPos, int paddleLeft, int paddleRight);

@@ -8,9 +8,9 @@
 *
 */
 
-#define NOTROBOTC  // Comment this out if running with the ROBOTC compiler
+// #define NOTROBOTC  // Comment this out if running with the ROBOTC compiler
 
-#include "../robotc_dummy.h"
+// #include "../robotc_dummy.h"
 
 // Replace ROBOTC-specific variables defined at top of file
 #ifdef NOTROBOTC

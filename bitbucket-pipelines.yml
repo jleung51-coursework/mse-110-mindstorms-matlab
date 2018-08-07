@@ -10,6 +10,7 @@ pipelines:
     - step:
         name: Compile all ROBOTC files
         script:
+          - ./use_robotc_dummy_code.sh
           - make all clean
     - step:
         name: Project 3 Barcode Scanner - Tests
