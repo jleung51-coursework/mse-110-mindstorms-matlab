@@ -1,3 +1,9 @@
+/**
+ * This ROBOTC header file provides basic data structures and manipulations
+ * for Directions and Locations.
+ *
+ */
+
 #pragma once
 
 #ifdef NOTROBOTC

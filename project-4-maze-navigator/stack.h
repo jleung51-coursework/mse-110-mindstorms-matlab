@@ -1,3 +1,9 @@
+/**
+ * This ROBOTC header file provides a basic data structure representing a
+ * stack of Directions.
+ *
+ */
+
 #pragma once
 
 #include "map-essentials.h"
