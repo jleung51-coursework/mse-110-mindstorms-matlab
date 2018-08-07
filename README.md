@@ -29,3 +29,8 @@ To test the compilation of the ROBOTC programs, run `make` and use any of the op
 To run the ROBOTC programs, use the ROBOTC IDEs.
 
 To run the MATLAB programs, use the MATLAB or GNU Octave IDEs.
+
+# Main Contributors
+
+* Aryanna Mason
+* Jeffrey Leung
