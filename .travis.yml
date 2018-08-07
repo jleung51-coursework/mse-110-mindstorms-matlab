@@ -1,0 +1,22 @@
+# This YAML file configures Travis CI to build and test the projects.
+
+sudo: required
+
+language: c
+
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+
+services:
+  - docker
+
+before_install:
+  - docker run jleung51/octave:0.2
+
+script:
+  - ./use_robotc_dummy_code.sh
+  - make all clean
+  - cd project-3-barcode-scanner/matlab/
+  - octave --no-gui testreadbarcode.m
