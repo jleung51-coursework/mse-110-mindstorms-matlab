@@ -7,3 +7,7 @@ The right-hand rule is used to navigate the maze. The maze is composed of square
 ## Video (Test Course)
 
 [![Video: Test Course](img/video-test-course.png)](https://www.youtube.com/watch?v=hmYneoryDFs)
+
+## Video (Demo)
+
+[![Video: Demo](img/video-demo.png)](https://www.youtube.com/watch?v=-XPf4i26D1A)
