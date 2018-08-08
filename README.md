@@ -27,7 +27,7 @@ pkg install -forge signal
 
 ## Execution
 
-To test the compilation of the ROBOTC programs, run `make` and use any of the options that appear.  
+To test the compilation of the ROBOTC programs in GCC, run `make` and activate the dummy code before using any of the Make options.
 To run the ROBOTC programs, use the ROBOTC IDEs.
 
 To run the MATLAB programs, use the MATLAB or GNU Octave IDEs.

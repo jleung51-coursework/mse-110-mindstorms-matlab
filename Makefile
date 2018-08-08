@@ -22,6 +22,8 @@ OUTPUT = program.out
 # $ 'make' or 'make help'
 help:
 	@echo "ROBOTC MAKEFILE INSTRUCTIONS:"
+	@echo "  To enable the ROBOTC dummy code to allow GCC compilation through this Makefile, run: make activate_dummy"
+	@echo "  To disable the ROBOTC dummy file to disallow GCC compilation through this Makefile, run: make deactivate_dummy"
 	@echo "  To compile all ROBOTC files, run: make all"
 	@echo "  To compile Exercise 1 (pong), run: make pong"
 	@echo "  To compile Project 1 (line follower), run: make follower"
@@ -37,6 +39,12 @@ help:
 #   $< refers to the first item in the dependency list
 %.o: %.c $(HEADERS)
 	$(GCC) $(CFLAGS) $<
+
+activate_dummy:
+	./scripts/activate_robotc_dummy_code.sh
+
+deactivate_dummy:
+	./scripts/deactivate_robotc_dummy_code.sh
 
 # $ make all
 all: pong follower follower-pid combat scanner
