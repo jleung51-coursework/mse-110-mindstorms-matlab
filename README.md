@@ -1,5 +1,7 @@
 # MSE 110: Projects
 
+[![Build Status](https://api.travis-ci.com/jleung51-coursework/mse-110-mindstorms-matlab.svg?branch=master)](https://travis-ci.com/jleung51-coursework/mse-110-mindstorms-matlab)
+
 This repository contains the projects for _MSE 110: Mechatronics Design I_ at Simon Fraser University for the Summer 2018 semester.
 
 The projects are coded in **Lego Mindstorms EV3 ROBOTC** and **MATLAB**.
