@@ -13,10 +13,11 @@ services:
   - docker
 
 before_install:
-  - docker run jleung51/octave:0.2
+  - docker run -d -p 127.0.0.1:80:80 jleung51/octave:0.2
+  - docker ps -a
+  - docker cp project-3-barcode-scanner/ jleung51/octave:./
 
 script:
   - ./use_robotc_dummy_code.sh
   - make all clean
-  - cd project-3-barcode-scanner/matlab/
-  - octave --no-gui testreadbarcode.m
+  - docker run jleung51/octave /bin/sh -c "cd project-3-barcode-scanner/ && octave --no-gui testreadbarcode.m"
