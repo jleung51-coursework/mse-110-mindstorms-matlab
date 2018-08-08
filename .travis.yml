@@ -19,6 +19,6 @@ before_install:
   - docker cp project-3-barcode-scanner/ ${CONTAINER}:./
 
 script:
-  - ./use_robotc_dummy_code.sh
+  - ./scripts/activate_robotc_dummy_code.sh
   - make all clean
   - docker exec -t ${CONTAINER} /bin/sh -c "cd project-3-barcode-scanner/matlab/ && octave --no-gui testreadbarcode.m"
