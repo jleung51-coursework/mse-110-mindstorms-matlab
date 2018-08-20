@@ -8,6 +8,10 @@ The projects are coded in **Lego Mindstorms EV3 ROBOTC** and **MATLAB**.
 
 ## Setup
 
+### ROBOTC
+
+To compile and execute the ROBOTC code without a ROBOTC IDE, set up the [ROBOTC dummy header](https://github.com/jleung51/utilities/tree/master/robotc_dummy) in the root directory of this repository.
+
 ### MATLAB
 
 Project 3 requires [MATLAB](https://www.mathworks.com/products/matlab.html).

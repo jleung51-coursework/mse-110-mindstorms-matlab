@@ -17,6 +17,9 @@ before_install:
   - docker ps -a
   - CONTAINER="$(docker ps -a --format '{{.Names}}')"
   - docker cp project-3-barcode-scanner/ ${CONTAINER}:./
+  - git clone https://github.com/jleung51/utilities.git
+  - cp utilities/robotc_dummy/robotc_dummy.h .
+  - docker cp utilities/robotc_dummy/robotc_dummy.h ${CONTAINER}:./
 
 script:
   - make activate_dummy all clean deactivate_dummy
