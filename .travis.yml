@@ -13,7 +13,7 @@ services:
   - docker
 
 before_install:
-  - docker run -dt -p 127.0.0.1:80:80 jleung51/octave:0.2 /bin/bash
+  - docker run -dt -p 127.0.0.1:80:80 jleung51/octave:0.3 /bin/bash
   - docker ps -a
   - CONTAINER="$(docker ps -a --format '{{.Names}}')"
   - docker cp project-3-barcode-scanner/ ${CONTAINER}:./
