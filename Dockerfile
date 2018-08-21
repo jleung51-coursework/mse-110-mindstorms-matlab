@@ -1,7 +1,6 @@
 # Dockerfile configuration for a GNU Octave instance.
 
 FROM ubuntu:18.04
-MAINTAINER Jeffrey Leung
 
 RUN apt-get update && apt-get install -y software-properties-common
 RUN apt-get install -y build-essential make octave liboctave-dev
