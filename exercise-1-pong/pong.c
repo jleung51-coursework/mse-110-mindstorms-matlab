@@ -1,5 +1,5 @@
 /*
-* This Lego Mindstorms EV3 ROBOTC program follows a black line.
+* This Lego Mindstorms EV3 ROBOTC program plays a pong game on the brick's screen.
 *
 */
 
